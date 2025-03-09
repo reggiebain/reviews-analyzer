@@ -18,5 +18,7 @@ Potential Outliers (using IQR method):
 | Yandex | 3.42 | 290 | Low |
 | **Overall Avg** | **4.65** | **1454711** | N/A |
 
-![fig6](../images/word_count_hist.png)
-![fig5](../images/review_count_hist.png)
+![fig5](../images/word_count_hist.png)
+![fig6](../images/review_count_hist.png)
+![fig7](../images/review_entropy_dist.png)
+![fig8](../images/review_entropy_lang.png)
