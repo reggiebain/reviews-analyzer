@@ -14,3 +14,6 @@
 - Course instructors or those in “voice of customer” type roles in industry
 - Administrators in academia/industry who want to produce broad performance metrics for staff
 - Students/customers who may be able to assess the quality of a course or product based on review summaries
+
+## [Checkpoint 1 - EDA](../eda/)
+- Click the link above to see our exploratory data analysis into Coursera reviews
