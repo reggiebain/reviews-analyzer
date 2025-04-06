@@ -38,7 +38,7 @@ if st.button("Analyze"):
             #   device=-1  # CPU-only for Streamlit Cloud
         #)
         st.write("Inside the analyzer button part...")
-        sentiment_analyzer = pipeline('sentiment-analysis', model="distilbert-base-uncased-finetuned-sst-2-english")
+        sentiment_analyzer = pipeline('sentiment-analysis', model="nlptown/bert-base-multilingual-uncased-sentiment")
         print(sentiment_analyzer.model.name_or_path)
         # Analyze sentiment for each review
         results = sentiment_analyzer("This class was awesome!")
