@@ -23,7 +23,7 @@ def load_sentiment_model():
 
 sentiment_model = load_sentiment_model()
 
-
+'''
 @st.cache_resource
 def load_summarizer():
     #return pipeline("summarization", model="facebook/bart-large-cnn")
@@ -32,7 +32,7 @@ def load_summarizer():
 
 # 🔹 LLM feedback (you need an OpenAI API key)
 openai.api_key = st.secrets.get("OPENAI_API_KEY")
-
+'''
 # 🔹 Example data
 sample_reviews = [
     "This course was very informative and well-structured. I learned a lot!",
@@ -54,7 +54,7 @@ def can_detect_language(text):
         return detect(text)
     except:
         return 0
-
+'''
 def predict_sentiment(text):
     return sentiment_model.predict([text])[0]  # binary: 0 = neg, 1 = pos
 
@@ -80,7 +80,7 @@ def generate_constructive_feedback(reviews):
         temperature=0.7,
     )
     return completion.choices[0].message.content
-
+'''
 # Streamlit UI
 st.title("📘 Course Review Sentiment Analyzer")
 
@@ -105,7 +105,8 @@ if reviews:
 
     for review in reviews:
         if not can_detect_language(review):
-            sentiment = predict_sentiment(review)
+            #sentiment = predict_sentiment(review)
+            sentiment = 'test sentiment'
             results.append([review, sentiment])
             sentiments.append(sentiment)
             valid_reviews.append(review)
