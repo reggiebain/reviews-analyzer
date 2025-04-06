@@ -46,15 +46,16 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Title with delimiter
+st.markdown('<div class="title">Course Review Analyzer</div>', unsafe_allow_html=True)
+st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+st.write("This app analyzes the sentiment of course reviews, summarizes them, provides an overall rating, and offers constructive feedback. Use the buttons below!")
+
+
 # Make two main columns, left is info and questions, right is results
-left_col, right_col = st.columns([1,1.5])
+left_col, right_col = st.columns([1,1])
 
 with left_col:
-    # Title with delimiter
-    st.markdown('<div class="title">Course Review Sentiment Analyzer</div>', unsafe_allow_html=True)
-    st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
-    st.write("This app analyzes the sentiment of course reviews, summarizes them, provides an overall rating, and offers constructive feedback. Use the buttons below!")
-
     # Add a course-related image
     st.image(
         "images/app_logo.png",  # Free online course image
