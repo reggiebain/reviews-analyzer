@@ -1,5 +1,5 @@
 streamlit
 pandas
 langdetect
-tranformers
+transformers
 torch
