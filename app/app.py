@@ -4,6 +4,7 @@ from transformers import pipeline
 import torch
 from huggingface_hub import login
 from openai import OpenAI
+import re
 
 # Login to HG using token stored in secrets
 login(token=st.secrets['api_keys']['HF_TOKEN'])
@@ -70,6 +71,7 @@ def load_summarizer():
         return pipeline(
             "summarization",
             #model="sshleifer/distilbart-cnn-12-6",
+            #model = "google/bert2bert_L-12_H-768_A-12",
             model='t5-small',
             device=-1
         )
@@ -116,10 +118,15 @@ if summarize_clicked:
             try:
                 joined_text = " ".join(reviews)
                 summary = summarizer(joined_text, max_length=100, min_length=30, do_sample=False)[0]["summary_text"]
+
                 st.session_state.summary = summary
-                bullet_points = summary.split(". ")[:3]
+                
+                #bullet_points = summary.split(". ")[:3]
+                bullet_points = re.split(f'[.!]', summary)
+                
                 st.subheader("Summary of Reviews")
-                st.markdown("\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()]))
+                bullet_points_text = "\n".join([f"• {point.strip()}" for point in bullet_points if point.strip()])
+                st.markdown(bullet_points_text)
             except Exception as e:
                 st.error(f"Summarization failed: {str(e)}")
 
