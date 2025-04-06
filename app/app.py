@@ -12,7 +12,7 @@ import sys
 dir = pathlib.Path.cwd().absolute()
 
 sys.path.append(dir.parent.parent)
-sentiment_model_path = "./sentiment_model_classical.pkl"
+sentiment_model_path = "app/sentiment_model_classical.pkl"
 with open(sentiment_model_path, "rb") as f:
     sentiment_model = pickle.load(f)
 
