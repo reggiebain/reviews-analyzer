@@ -120,7 +120,8 @@ if reviews:
         # 🔹 Show 3-point summary
         st.write("### 🔍 Summary of Reviews (3 Bullet Points)")
         with st.spinner("Generating summary..."):
-            bullet_summary = summarize_reviews_bullets(valid_reviews)
+            bullet_summary = "test bullet summary"
+            #bullet_summary = summarize_reviews_bullets(valid_reviews)
         st.markdown(bullet_summary)
 
         # 🔹 Compute score from 1 to 5
@@ -131,5 +132,6 @@ if reviews:
         # 🔹 Generate LLM feedback
         st.write("### 💡 Constructive Feedback for the Course Creator")
         with st.spinner("Asking LLM for feedback..."):
-            feedback = generate_constructive_feedback(valid_reviews)
+            feedback = 'test feedback'
+            #feedback = generate_constructive_feedback(valid_reviews)
         st.markdown(feedback)
