@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 #import torch
-#from transformers import pipeline
+from transformers import pipeline
 from langdetect import detect
 #import openai
 
@@ -33,6 +33,8 @@ def load_summarizer():
 # 🔹 LLM feedback (you need an OpenAI API key)
 openai.api_key = st.secrets.get("OPENAI_API_KEY")
 '''
+def load_sentiment_model():
+    return pipeline("finiteautomata/bertweet-base-sentiment-analysis")
 # 🔹 Example data
 sample_reviews = [
     "This course was very informative and well-structured. I learned a lot!",
@@ -54,10 +56,10 @@ def can_detect_language(text):
         return detect(text)
     except:
         return 0
-'''
-def predict_sentiment(text):
-    return sentiment_model.predict([text])[0]  # binary: 0 = neg, 1 = pos
 
+def predict_sentiment(text):
+    return load_sentiment_model.predict([text])[0]  # binary: 0 = neg, 1 = pos
+'''
 def summarize_reviews_bullets(reviews):
     #summarizer = load_summarizer()
     combined_text = " ".join(reviews)
