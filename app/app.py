@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from transformers import pipeline
+from transformers.utils import init_empty_weights
 import torch
 from huggingface_hub import login
 
@@ -39,6 +40,7 @@ if st.button("Analyze"):
         #)
  
         sentiment_analyzer = pipeline('sentiment-analysis', model="finiteautomata/bertweet-base-sentiment-analysis")
+        print(sentiment_analyzer.model.name_or_path)
         # Analyze sentiment for each review
         results = sentiment_analyzer("This class was awesome!")
 
