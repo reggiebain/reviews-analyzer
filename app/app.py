@@ -51,6 +51,14 @@ st.markdown('<div class="title">Course Review Sentiment Analyzer</div>', unsafe_
 st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 st.write("This app analyzes the sentiment of course reviews, summarizes them, provides an overall rating, and offers constructive feedback. Use the buttons below!")
 
+# Add a course-related image
+st.image(
+    "images/app_logo.png",  # Free online course image
+    caption="Get feedback on your course!",
+    width=300
+)
+
+
 # Sample reviews (hardcoded for simplicity; could be loaded from a file)
 st.markdown('<div class="subheader">Sample Reviews</div>', unsafe_allow_html=True)
 sample_reviews = [
