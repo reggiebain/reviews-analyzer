@@ -47,12 +47,12 @@ st.markdown("""
         border: 1px solid #FFB300; /* Bright orange border */
     }
     .result-box {
-        background-color: #2E7D32; /* Darker green background */
-        color: #E8F5E9; /* Light green text for readability */
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #81C784; /* Lighter green border */
-        margin-top: 10px;
+        background-color: #2E7D32; /* Dark green background */
+        padding: 15px; 
+        border-radius: 10px; 
+        border: 1px solid #81C784; /* Light green border */
+        margin-top: 10px; 
+        width: 100%; 
     }
     </style>
 """, unsafe_allow_html=True)
@@ -104,6 +104,7 @@ reviews = [r.strip() for r in reviews if r.strip()]
 
 # Buttons
 st.markdown('<div class="subheader">Actions</div>', unsafe_allow_html=True)
+st.write()
 #st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 with col1:
@@ -175,7 +176,7 @@ if analyze_clicked:
 
                 # Prepare data for table
                 df = pd.DataFrame({
-                    "Review": sample_reviews,
+                    "Review": reviews,
                     "Sentiment": [result["label"].capitalize() for result in results],
                     "Confidence": [round(result["score"], 2) for result in results]
                 })
