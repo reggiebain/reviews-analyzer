@@ -6,8 +6,17 @@ from huggingface_hub import login
 from openai import OpenAI
 import re
 
-# Login to HG using token stored in secrets
-login(token=st.secrets['api_keys']['HF_TOKEN'])
+# Login to Hugging Face with debug output
+try:
+    st.write("Logging in to Hugging Face...")
+    login(token=st.secrets['api_keys']['HF_TOKEN'])
+    st.write("Hugging Face login successful.")
+except KeyError:
+    st.error("Hugging Face token not found in secrets. Please configure it in Streamlit Cloud settings.")
+    st.stop()
+except Exception as e:
+    st.error(f"Login failed: {str(e)}")
+    st.stop()
 
 # get open ai client using my secret
 openai_client = OpenAI(api_key=st.secrets['api_keys']['OPENAI_API_KEY'])
