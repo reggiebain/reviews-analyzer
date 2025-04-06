@@ -21,8 +21,6 @@ st.subheader("Sample Reviews")
 st.write("Here are some example course reviews (positive and negative):")
 reviews = st.text_area("Enter reviews (one per line)", "\n".join(sample_reviews)).split("\n")
 reviews = [r.strip() for r in reviews if r.strip()]
-for review in sample_reviews:
-    st.write(f"- {review}")
 
 # Button to trigger analysis
 if st.button("Analyze"):
@@ -30,8 +28,9 @@ if st.button("Analyze"):
     # Using a lightweight model for faster deployment (distilbert)
     with st.spinner("Loading model and analyzing sentiments..."):
         sentiment_analyzer = pipeline(
-            "sentiment-analysis",
+            #"sentiment-analysis",
             #model="distilbert-base-uncased-finetuned-sst-2-english",
+            model="finiteautomata/bertweet-base-sentiment-analysis",
             device=-1  # CPU-only for Streamlit Cloud
         )
 
