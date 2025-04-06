@@ -9,7 +9,7 @@ login(token=st.secrets['api_keys']['HF_TOKEN'])
 
 # Title and description
 st.title("Course Review Sentiment Analyzer")
-st.write("This app analyzes the sentiment of course reviews. Click 'Analyze' to see the results!")
+st.write("This app analyzes the sentiment of course reviews, summarizes them, and provides an overall rating. Use the buttons below!")
 
 # Sample reviews (hardcoded for simplicity; could be loaded from a file)
 sample_reviews = [
@@ -47,7 +47,9 @@ if analyze_clicked:
     # Using a lightweight model for faster deployment (distilbert)
     with st.spinner("Loading model and analyzing sentiments..."):
 
-        sentiment_analyzer = pipeline('sentiment-analysis', model="nlptown/bert-base-multilingual-uncased-sentiment")
+        sentiment_analyzer = pipeline('sentiment-analysis', 
+                                      model="nlptown/bert-base-multilingual-uncased-sentiment",
+                                      device=-1)
         results = sentiment_analyzer(reviews)
 
         # Prepare data for table
@@ -58,7 +60,7 @@ if analyze_clicked:
         })
         # Store results in "session state"
         st.session_state.sentiment_results = df
-        
+
         # Display results
         st.subheader("Sentiment Analysis Results")
         st.write("Here’s the sentiment for each review:")
@@ -84,27 +86,24 @@ if rating_clicked:
         with st.spinner("Calculating overall rating..."):
             df = st.session_state.sentiment_results
 
-            # Map sentiments to scores: Positive = 1, Neutral = 0.5, Negative = 0
-            sentiment_scores = {
-                "Positive": 1.0,
-                "Neutral": 0.5,
-                "Negative": 0.0
+            # Map star ratings that come out of the NLP town model above to numerical scores (1 to 5)
+            star_map = {
+                "1 star": 1.0,
+                "2 stars": 2.0,
+                "3 stars": 3.0,
+                "4 stars": 4.0,
+                "5 stars": 5.0
             }
-            scores = [sentiment_scores[sent] * conf for sent, conf in zip(df["Sentiment"], df["Confidence"])]
+            scores = [star_map.get(sent, 3.0) * conf for sent, conf in zip(df["Sentiment"], df["Confidence"])]  # Default to 3.0 if unexpected label
 
-            # Calculate average score and scale to 1-5
-            avg_score = sum(scores) / len(scores) if scores else 0
-            rating = round(1 + 4 * avg_score, 1)  # 1 (all Negative) to 5 (all Positive)
+            # Calculate average score and scale to 1-5 (already in this range)
+            avg_score = sum(scores) / len(scores) if scores else 3.0  # Default to 3 if no scores
+            rating = round(avg_score, 1)
 
-            # Generate justification
-            pos_count = len(df[df["Sentiment"] == "Positive"])
-            neg_count = len(df[df["Sentiment"] == "Negative"])
-            neu_count = len(df[df["Sentiment"] == "Neutral"])
-            total = len(df)
-            justification = (
-                f"Out of {total} reviews, {pos_count} were Positive, "
-                f"{neg_count} were Negative, and {neu_count} were Neutral."
-            )
+            # Generate justification based on star counts
+            star_counts = df["Sentiment"].value_counts().to_dict()
+            justification_parts = [f"{star_counts.get(st, 0)} were {st}" for st in star_map.keys()]
+            justification = f"Out of {len(df)} reviews, " + ", ".join([part for part in justification_parts if part[0] != "0"]) + "."
 
             # Display rating and justification
             st.subheader("Overall Course Rating")
