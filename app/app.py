@@ -33,8 +33,8 @@ def load_summarizer():
 # 🔹 LLM feedback (you need an OpenAI API key)
 openai.api_key = st.secrets.get("OPENAI_API_KEY")
 '''
-def load_sentiment_model():
-    return pipeline("finiteautomata/bertweet-base-sentiment-analysis")
+
+
 # 🔹 Example data
 sample_reviews = [
     "This course was very informative and well-structured. I learned a lot!",
@@ -56,6 +56,10 @@ def can_detect_language(text):
         return detect(text)
     except:
         return 0
+@st.cache_resource    
+def load_sentiment_model():
+    from transformers import pipeline
+    return pipeline("finiteautomata/bertweet-base-sentiment-analysis")
 
 def predict_sentiment(text):
     return load_sentiment_model.predict([text])[0]  # binary: 0 = neg, 1 = pos
@@ -107,11 +111,12 @@ if reviews:
 
     for review in reviews:
         if not can_detect_language(review):
-            #sentiment = predict_sentiment(review)
-            sentiment = 'test sentiment'
-            results.append([review, sentiment])
-            sentiments.append(sentiment)
-            valid_reviews.append(review)
+            with st.spinner("Analyzing the sentiment of reviews..."):
+                sentiment = predict_sentiment(review)
+                #sentiment = 'test sentiment'
+                results.append([review, sentiment])
+                sentiments.append(sentiment)
+                valid_reviews.append(review)
         else:
             results.append([review, "Ignored (non-English or invalid)"])
 
