@@ -56,7 +56,9 @@ if analyze_clicked:
             "Sentiment": [result["label"].capitalize() for result in results],
             "Confidence": [round(result["score"], 2) for result in results]
         })
-
+        # Store results in "session state"
+        st.session_state.sentiment_results = df
+        
         # Display results
         st.subheader("Sentiment Analysis Results")
         st.write("Here’s the sentiment for each review:")
@@ -73,7 +75,7 @@ if summarize_clicked:
         bullet_points = summary.split(". ")[:3]
         st.subheader("Summary of Reviews")
         st.markdown("\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()]))
-        
+
 # ----------------- RATING TASK -------------------
 if rating_clicked:
     if st.session_state.sentiment_results is None:
