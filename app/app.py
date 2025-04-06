@@ -51,48 +51,76 @@ if "sentiment_results" not in st.session_state:
 if "summary" not in st.session_state:
     st.session_state.summary = None
 
-# ----------------- ANALYSIS TASK --------------------
-if analyze_clicked:
-    # Load sentiment analysis pipeline from Hugging Face
-    # Using a lightweight model for faster deployment (distilbert)
-    with st.spinner("Loading model and analyzing sentiments..."):
+@st.cache_resource
+def load_sentiment_analyzer():
+    try:
+        return pipeline(
+            'sentiment-analysis',
+            model="nlptown/bert-base-multilingual-uncased-sentiment",
+            device=-1
+        )
+    except Exception as e:
+        st.error(f"Failed to load sentiment model: {str(e)}")
+        return None
 
-        sentiment_analyzer = pipeline('sentiment-analysis', 
-                                      model="nlptown/bert-base-multilingual-uncased-sentiment",
-                                      device=-1)
-        results = sentiment_analyzer(reviews)
-
-        # Prepare data for table
-        df = pd.DataFrame({
-            "Review": sample_reviews,
-            "Sentiment": [result["label"].capitalize() for result in results],
-            "Confidence": [round(result["score"], 2) for result in results]
-        })
-        # Store results in "session state"
-        st.session_state.sentiment_results = df
-
-        # Display results
-        st.subheader("Sentiment Analysis Results")
-        st.write("Here’s the sentiment for each review:")
-        st.table(df)
-
-# ----------------- SUMMARIZE TASK -------------------
-if summarize_clicked:
-    with st.spinner("Loading summarization model and generating summary..."):
-        summarizer = pipeline(
+# Cache summarization model
+@st.cache_resource
+def load_summarizer():
+    try:
+        return pipeline(
             "summarization",
             model="sshleifer/distilbart-cnn-12-6",
             device=-1
         )
-        joined_text = " ".join(reviews)
+    except Exception as e:
+        st.error(f"Failed to load summarization model: {str(e)}")
+        return None
 
-        summary = summarizer(joined_text, max_length=100, min_length=30, do_sample=False)[0]["summary_text"]
-        st.session_state.summary = summary
+# ----------------- ANALYSIS TASK --------------------
+if analyze_clicked:
+    with st.spinner("Loading model and analyzing sentiments..."):
+        sentiment_analyzer = load_sentiment_analyzer()
+        if sentiment_analyzer is None:
+            st.error("Sentiment analysis failed due to model loading issue.")
+        else:
+            try:
+                #sentiment_analyzer = pipeline('sentiment-analysis', 
+                #                              model="nlptown/bert-base-multilingual-uncased-sentiment",
+                #                              device=-1)
+                results = sentiment_analyzer(reviews)
 
-        # Break summary into 3 bullet points
-        bullet_points = summary.split(". ")[:3]
-        st.subheader("Summary of Reviews")
-        st.markdown("\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()]))
+                # Prepare data for table
+                df = pd.DataFrame({
+                    "Review": sample_reviews,
+                    "Sentiment": [result["label"].capitalize() for result in results],
+                    "Confidence": [round(result["score"], 2) for result in results]
+                })
+                # Store results in "session state"
+                st.session_state.sentiment_results = df
+
+                # Display results
+                st.subheader("Sentiment Analysis Results")
+                st.write("Here’s the sentiment for each review:")
+                st.table(df)
+            except Exception as e:
+                st.error(f"Sentiment analysis failed: {str(e)}")
+
+# ----------------- SUMMARIZE TASK -------------------
+if summarize_clicked:
+    with st.spinner("Loading summarization model and generating summary..."):
+        summarizer = load_summarizer()
+        if summarizer is None:
+            st.error("Summarization failed due to model loading issue.")
+        else:
+            try:
+                joined_text = " ".join(reviews)
+                summary = summarizer(joined_text, max_length=100, min_length=30, do_sample=False)[0]["summary_text"]
+                st.session_state.summary = summary
+                bullet_points = summary.split(". ")[:3]
+                st.subheader("Summary of Reviews")
+                st.markdown("\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()]))
+            except Exception as e:
+                st.error(f"Summarization failed: {str(e)}")
 
 # ----------------- RATING TASK -------------------
 if rating_clicked:
@@ -132,25 +160,26 @@ if feedback_clicked:
         st.warning("Please run 'Summarize Reviews' first to generate a summary!")
     else:
         with st.spinner("Generating constructive feedback from LLM..."):
-            summary = st.session_state.summary
-            prompt = (
-                f"Here is a summary of course reviews: '{summary}'. "
-                "Please provide constructive feedback on how the course could be improved based on this summary."
-            )
-            response = openai_client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "You are a helpful course instructor providing constructive feedback."},
-                    {"role": "user", "content": prompt}
-                ],
-                max_tokens=150,
-                temperature=0.7
-            )
-            feedback = response.choices[0].message.content.strip()
-
-            # Display feedback
-            st.subheader("Constructive Feedback")
-            st.write(feedback)
+            try:
+                summary = st.session_state.summary
+                prompt = (
+                    f"Here is a summary of course reviews: '{summary}'. "
+                    "Please provide constructive feedback on how the course could be improved based on this summary."
+                )
+                response = openai_client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "You are a helpful course instructor providing constructive feedback."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    max_tokens=150,
+                    temperature=0.7
+                )
+                feedback = response.choices[0].message.content.strip()
+                st.subheader("Constructive Feedback")
+                st.write(feedback)
+            except Exception as e:
+                st.error(f"Failed to get feedback from LLM: {str(e)}")
 
 # Footer
 st.write("Powered by Hugging Face Transformers and Streamlit.")
