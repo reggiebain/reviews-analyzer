@@ -4,16 +4,20 @@ import pickle
 import torch
 from transformers import pipeline
 from langdetect import detect
+import openai
 
-# Load sentiment analysis model
+# 🔹 Load your sentiment model (binary classifier)
 sentiment_model_path = "sentiment_model.pkl"
 with open(sentiment_model_path, "rb") as f:
     sentiment_model = pickle.load(f)
 
-# Load summarization model
+# 🔹 Summarizer (for 3 bullet point summary)
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
-# Sample reviews
+# 🔹 LLM feedback (you need an OpenAI API key)
+openai.api_key = st.secrets.get("OPENAI_API_KEY")
+
+# 🔹 Example data
 sample_reviews = [
     "This course was very informative and well-structured. I learned a lot!",
     "The content was good, but the pacing was a bit too fast for me.",
@@ -29,26 +33,39 @@ sample_reviews = [
 
 def can_detect_language(text):
     if not isinstance(text, str) or pd.isna(text) or len(text.strip()) < 3:
-        return 0  # For NaN, empty, or very short text
+        return 0
     try:
         return detect(text)
     except:
-        return 0  # Fallback for any detection errors
+        return 0
 
-# Function to predict sentiment
 def predict_sentiment(text):
-    return sentiment_model.predict([text])[0]  # Returns sentiment score (0-2)
+    return sentiment_model.predict([text])[0]  # binary: 0 = neg, 1 = pos
 
-# Function to summarize reviews
-def summarize_reviews(reviews):
+def summarize_reviews_bullets(reviews):
     combined_text = " ".join(reviews)
-    summary = summarizer(combined_text, max_length=150, min_length=50, do_sample=False)
-    return summary[0]["summary_text"]
+    summary = summarizer(combined_text, max_length=150, min_length=50, do_sample=False)[0]["summary_text"]
+    bullets_prompt = f"Turn the following review summary into 3 bullet points:\n\n{summary}"
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": bullets_prompt}],
+        temperature=0.7,
+    )
+    return completion.choices[0].message.content
+
+def generate_constructive_feedback(reviews):
+    joined_reviews = "\n".join(reviews)
+    feedback_prompt = f"Here are some user reviews about a course:\n{joined_reviews}\n\nPlease provide constructive feedback for the course creator."
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": feedback_prompt}],
+        temperature=0.7,
+    )
+    return completion.choices[0].message.content
 
 # Streamlit UI
-st.title("Course Review Sentiment Analyzer")
+st.title("📘 Course Review Sentiment Analyzer")
 
-# File uploader or manual input
 uploaded_file = st.file_uploader("Upload a CSV file with reviews", type=["csv"])
 
 if uploaded_file is not None:
@@ -59,7 +76,7 @@ if uploaded_file is not None:
         st.error("CSV must contain a 'review' column.")
         reviews = []
 else:
-    st.subheader("Enter Reviews Manually or Use Sample Reviews")
+    st.subheader("Or use sample reviews below:")
     reviews = st.text_area("Enter reviews (one per line)", "\n".join(sample_reviews)).split("\n")
     reviews = [r.strip() for r in reviews if r.strip()]
 
@@ -75,16 +92,26 @@ if reviews:
             sentiments.append(sentiment)
             valid_reviews.append(review)
         else:
-            results.append([review, "Gibberish (ignored)"])
+            results.append([review, "Ignored (non-English or invalid)"])
 
-    df_results = pd.DataFrame(results, columns=["Review", "Predicted Sentiment (0-2)"])
+    df_results = pd.DataFrame(results, columns=["Review", "Sentiment (0=neg, 1=pos)"])
     st.write("### Sentiment Analysis Results")
     st.dataframe(df_results)
 
     if valid_reviews:
-        summary = summarize_reviews(valid_reviews)
-        st.write("### Summary of Reviews")
-        st.write(summary)
+        # 🔹 Show 3-point summary
+        st.write("### 🔍 Summary of Reviews (3 Bullet Points)")
+        with st.spinner("Generating summary..."):
+            bullet_summary = summarize_reviews_bullets(valid_reviews)
+        st.markdown(bullet_summary)
 
+        # 🔹 Compute score from 1 to 5
         avg_sentiment = sum(sentiments) / len(sentiments)
-        st.write(f"### Overall Rating: {round(avg_sentiment, 2)}")
+        score = round(1 + avg_sentiment * 4, 1)  # Scaled to 1–5
+        st.write(f"### ⭐ Overall Course Rating: {score} / 5")
+
+        # 🔹 Generate LLM feedback
+        st.write("### 💡 Constructive Feedback for the Course Creator")
+        with st.spinner("Asking LLM for feedback..."):
+            feedback = generate_constructive_feedback(valid_reviews)
+        st.markdown(feedback)
