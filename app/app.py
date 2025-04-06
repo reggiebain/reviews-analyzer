@@ -90,7 +90,7 @@ sample_reviews = [
 
 # Display sample reviews
 reviews = st.text_area("Enter reviews (one per line) or use the sample reviews shown", 
-                       "\n".join(sample_reviews), height=300).split("\n")
+                       "\n".join(sample_reviews), height=200).split("\n")
 reviews = [r.strip() for r in reviews if r.strip()]
 
 # Buttons
