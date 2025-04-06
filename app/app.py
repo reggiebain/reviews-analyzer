@@ -62,8 +62,7 @@ with left_col:
         caption="Get feedback on your course!",
         width=300
     )
-
-
+with right_col:
     # Sample reviews (hardcoded for simplicity; could be loaded from a file)
     st.markdown('<div class="subheader">Sample Reviews</div>', unsafe_allow_html=True)
     sample_reviews = [
@@ -74,8 +73,9 @@ with left_col:
         "Waste of time, content was outdated."
     ]
 
+with left_col:
     # Display sample reviews
-    st.subheader("Sample Reviews")
+    #st.subheader("Sample Reviews")
     st.write("Here are some example course reviews (positive and negative):")
     reviews = st.text_area("Enter reviews (one per line)", "\n".join(sample_reviews)).split("\n")
     reviews = [r.strip() for r in reviews if r.strip()]
