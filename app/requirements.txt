@@ -1,7 +1,7 @@
-streamlit==1.38.0
-pandas==2.2.2
+streamlit
+pandas
 torch==2.0.1
-scikit-learn==1.5.1
-transformers==4.41.2
-langdetect==1.0.9
-openai==1.45.0
+scikit-learn
+transformers
+langdetect
+openai
