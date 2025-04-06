@@ -12,11 +12,47 @@ login(token=st.secrets['api_keys']['HF_TOKEN'])
 # get open ai client using my secret
 openai_client = OpenAI(api_key=st.secrets['api_keys']['OPENAI_API_KEY'])
 
-# Title and description
-st.title("Course Review Sentiment Analyzer")
-st.write("This app analyzes the sentiment of course reviews, summarizes them, and provides an overall rating. Use the buttons below!")
+# Custom CSS for styling
+st.markdown("""
+    <style>
+    .title {
+        color: #2E7D32; /* Dark green */
+        font-size: 36px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .delimiter {
+        border: 2px solid #4CAF50; /* Light green */
+        margin: 10px 0;
+    }
+    .subheader {
+        color: #388E3C; /* Medium green */
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .warning-box {
+        background-color: #FFF3E0; /* Light orange */
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #FFB300; /* Orange border */
+    }
+    .result-box {
+        background-color: #E8F5E9; /* Light green background */
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #4CAF50;
+        margin-top: 10px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Title with delimiter
+st.markdown('<div class="title">Course Review Sentiment Analyzer</div>', unsafe_allow_html=True)
+st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+st.write("This app analyzes the sentiment of course reviews, summarizes them, provides an overall rating, and offers constructive feedback. Use the buttons below!")
 
 # Sample reviews (hardcoded for simplicity; could be loaded from a file)
+st.markdown('<div class="subheader">Sample Reviews</div>', unsafe_allow_html=True)
 sample_reviews = [
     "This course was amazing, I learned so much!",
     "Terrible experience, the instructor was unprepared.",
@@ -102,8 +138,9 @@ if analyze_clicked:
                 st.session_state.sentiment_results = df
 
                 # Display results
-                st.subheader("Sentiment Analysis Results")
+                st.markdown('<div class="subheader">Sentiment Analysis Results</div>', unsafe_allow_html=True)
                 st.write("Here’s the sentiment for each review:")
+                st.markdown('<div class="result-box">', unsafe_allow_html=True)
                 st.table(df)
             except Exception as e:
                 st.error(f"Sentiment analysis failed: {str(e)}")
@@ -121,16 +158,17 @@ if summarize_clicked:
                 st.session_state.summary = summary
                 #bullet_points = summary.split(". ")[:3]
                 bullet_points = re.split(f'[.!]', summary)
-                st.subheader("Summary of Reviews")
-                #bullet_points_text = "\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()])
+                st.markdown('<div class="subheader">Summary of Reviews</div>', unsafe_allow_html=True)
+                st.markdown('<div class="result-box">', unsafe_allow_html=True)
                 st.markdown("\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()]))
+                st.markdown('</div>', unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Summarization failed: {str(e)}")
 
 # ----------------- RATING TASK -------------------
 if rating_clicked:
     if st.session_state.sentiment_results is None:
-        st.warning("Please run 'Analyze Sentiment' first to get sentiment results!")
+        st.markdown('<div class="warning-box">Please run "Analyze Sentiment" first to get sentiment results!</div>', unsafe_allow_html=True)
     else:
         with st.spinner("Calculating overall rating..."):
             df = st.session_state.sentiment_results
@@ -155,9 +193,11 @@ if rating_clicked:
             justification = f"Out of {len(df)} reviews, " + ", ".join([part for part in justification_parts if part[0] != "0"]) + "."
 
             # Display rating and justification
-            st.subheader("Overall Course Rating")
+            st.markdown('<div class="subheader">Overall Course Rating</div>', unsafe_allow_html=True)
+            st.markdown('<div class="result-box">', unsafe_allow_html=True)
             st.write(f"The course is rated: **{rating} / 5**")
             st.write(f"Justification: {justification}")
+            st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------- FEEDBACK TASK -------------------
 if feedback_clicked:
