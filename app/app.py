@@ -12,35 +12,37 @@ login(token=st.secrets['api_keys']['HF_TOKEN'])
 # get open ai client using my secret
 openai_client = OpenAI(api_key=st.secrets['api_keys']['OPENAI_API_KEY'])
 
-# Custom CSS for styling
+# Custom CSS for dark mode-friendly styling
 st.markdown("""
     <style>
     .title {
-        color: #2E7D32; /* Dark green */
+        color: #4CAF50; /* Bright green for title */
         font-size: 36px;
         font-weight: bold;
         text-align: center;
     }
     .delimiter {
-        border: 2px solid #4CAF50; /* Light green */
+        border: 2px solid #81C784; /* Lighter green for lines */
         margin: 10px 0;
     }
     .subheader {
-        color: #388E3C; /* Medium green */
+        color: #81C784; /* Lighter green for subheaders */
         font-size: 24px;
         font-weight: bold;
     }
     .warning-box {
-        background-color: #FFF3E0; /* Light orange */
+        background-color: #FF8F00; /* Vibrant orange background */
+        color: #FFFFFF; /* White text for contrast */
         padding: 10px;
         border-radius: 5px;
-        border: 1px solid #FFB300; /* Orange border */
+        border: 1px solid #FFB300; /* Bright orange border */
     }
     .result-box {
-        background-color: #E8F5E9; /* Light green background */
+        background-color: #2E7D32; /* Darker green background */
+        color: #E8F5E9; /* Light green text for readability */
         padding: 15px;
         border-radius: 10px;
-        border: 1px solid #4CAF50;
+        border: 1px solid #81C784; /* Lighter green border */
         margin-top: 10px;
     }
     </style>
@@ -61,11 +63,21 @@ with left_col:
         width=250
     )
 with right_col:
-    st.markdown('<div class="subheader">Description</div>', unsafe_allow_html=True)
-    st.write("This app analyzes the sentiment of course reviews, summarizes them, provides an overall rating, and offers constructive feedback. Use the buttons below!")
+    st.markdown('<div class="subheader">App Description</div>', unsafe_allow_html=True)
+    st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+    st.write("""This app uses NLP techniques to analyze course reviews. 
+             It can track the sentiment, provide a summary, give you an overall score, 
+             and provide constructive feedback based on your reviews.""")
+    st.markdown("""
+            **Models Used:**
+            - *Sentiment Analysis*: `nlptown/bert-base-multilingual-uncased-sentiment` (Hugging Face)
+            - *Summarization*: `t5-small` (Hugging Face)
+            - *Rating*: Calculated locally from sentiment results
+            - *Feedback*: `gpt-3.5-turbo` (OpenAI)
+        """, unsafe_allow_html=True)
 
 # Sample reviews (hardcoded for simplicity; could be loaded from a file)
-st.markdown('<div class="subheader">Sample Reviews</div>', unsafe_allow_html=True)
+st.markdown('<div class="subheader">Reviews</div>', unsafe_allow_html=True)
 st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 sample_reviews = [
     "This course was amazing, I learned so much!",
@@ -76,15 +88,13 @@ sample_reviews = [
 ]
 
 # Display sample reviews
-#st.subheader("Sample Reviews")
-st.write("Here are some example course reviews (positive and negative):")
-reviews = st.text_area("Enter reviews (one per line)", "\n".join(sample_reviews)).split("\n")
+reviews = st.text_area("Enter reviews (one per line) or use the sample reviews shown", "\n".join(sample_reviews)).split("\n")
 reviews = [r.strip() for r in reviews if r.strip()]
 
 # Buttons
-col1, col2, col3, col4 = st.columns(4)
 st.markdown('<div class="subheader">Actions</div>', unsafe_allow_html=True)
 st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+col1, col2, col3, col4 = st.columns(4)
 with col1:
     analyze_clicked = st.button("Analyze Sentiment", use_container_width=True)
 with col2:
