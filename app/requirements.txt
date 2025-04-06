@@ -1,4 +1,5 @@
 streamlit
 pandas
 langdetect
-tranformers==4.28.1
+tranformers
+torch
