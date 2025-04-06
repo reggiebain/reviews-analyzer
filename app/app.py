@@ -37,8 +37,8 @@ if st.button("Analyze"):
         #    model="finiteautomata/bertweet-base-sentiment-analysis",
             #   device=-1  # CPU-only for Streamlit Cloud
         #)
-        print("Inside the analyzer button part...")
-        sentiment_analyzer = pipeline('sentiment-analysis', model="finiteautomata/bertweet-base-sentiment-analysis")
+        st.write("Inside the analyzer button part...")
+        sentiment_analyzer = pipeline('sentiment-analysis', model="distilbert-base-uncased-finetuned-sst-2-english")
         print(sentiment_analyzer.model.name_or_path)
         # Analyze sentiment for each review
         results = sentiment_analyzer("This class was awesome!")
