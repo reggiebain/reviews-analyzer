@@ -15,7 +15,7 @@ sys.path.append(dir.parent.parent)
 #sentiment_model_path = "app/sentiment_model_classical.pkl"
 #with open(sentiment_model_path, "rb") as f:
 #    sentiment_model = pickle.load(f)
-
+'''
 @st.cache_resource
 def load_sentiment_model():
     with open("app/sentiment_model_classical.pkl", "rb") as f:
@@ -23,7 +23,7 @@ def load_sentiment_model():
 
 sentiment_model = load_sentiment_model()
 
-'''
+
 @st.cache_resource
 def load_summarizer():
     #return pipeline("summarization", model="facebook/bart-large-cnn")
