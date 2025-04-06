@@ -69,11 +69,15 @@ if analyze_clicked:
 # ----------------- SUMMARIZE TASK -------------------
 if summarize_clicked:
     with st.spinner("Loading summarization model and generating summary..."):
-        summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+        summarizer = pipeline(
+            "summarization",
+            model="sshleifer/distilbart-cnn-12-6",
+            device=-1
+        )
         joined_text = " ".join(reviews)
         summary = summarizer(joined_text, max_length=100, min_length=30, do_sample=False)[0]["summary_text"]
 
-        # Break summary into 3 bullet points (simple split for readability)
+        # Break summary into 3 bullet points
         bullet_points = summary.split(". ")[:3]
         st.subheader("Summary of Reviews")
         st.markdown("\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()]))
