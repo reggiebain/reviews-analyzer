@@ -2,7 +2,7 @@ streamlit
 pandas
 torch==2.2.0
 scikit-learn==1.2.2
-transformers
+transformers==4.28.1
 langdetect
 openai
 path
