@@ -89,7 +89,8 @@ sample_reviews = [
 ]
 
 # Display sample reviews
-reviews = st.text_area("Enter reviews (one per line) or use the sample reviews shown", "\n".join(sample_reviews)).split("\n")
+reviews = st.text_area("Enter reviews (one per line) or use the sample reviews shown", 
+                       "\n".join(sample_reviews), height=300).split("\n")
 reviews = [r.strip() for r in reviews if r.strip()]
 
 # Buttons
@@ -139,7 +140,7 @@ def load_summarizer():
         st.error(f"Failed to load summarization model: {str(e)}")
         return None
 
-st.markdown('<div class="subheader">Results</div>', unsafe_allow_html=True)
+#st.markdown('<div class="subheader">Results</div>', unsafe_allow_html=True)
 #st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 # ----------------- ANALYSIS TASK --------------------
 if analyze_clicked:
@@ -166,8 +167,8 @@ if analyze_clicked:
                 # Display results
                 st.markdown('<div class="subheader">Sentiment Analysis Results</div>', unsafe_allow_html=True)
                 st.write("Here’s the sentiment for each review:")
-                st.markdown('<div class="result-box">', unsafe_allow_html=True)
-                st.table(df)
+                html_table = df.to_html(index=False, classes="result-box", escape=False)
+                st.markdown(f'<div class="result-box">{html_table}</div>', unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Sentiment analysis failed: {str(e)}")
 
