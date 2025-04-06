@@ -7,6 +7,10 @@ from langdetect import detect
 import openai
 
 # 🔹 Load your sentiment model (binary classifier)
+import pathlib
+dir = pathlib.Path.cwd().absolute()
+
+sys.path.append(dir.parent.parent)
 sentiment_model_path = "./sentiment_model_classical.pkl"
 with open(sentiment_model_path, "rb") as f:
     sentiment_model = pickle.load(f)
