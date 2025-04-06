@@ -5,8 +5,11 @@ import torch
 from huggingface_hub import login
 from openai import OpenAI
 
-#HF_TOKEN = st.secrets['api_keys']['HF_TOKEN']
+# Login to HG using token stored in secrets
 login(token=st.secrets['api_keys']['HF_TOKEN'])
+
+# get open ai client using my secret
+openai_client = OpenAI(api_key=st.secrets['api_keys']['OPENAI_API_KEY'])
 
 # Title and description
 st.title("Course Review Sentiment Analyzer")
