@@ -5,7 +5,7 @@ import torch
 from huggingface_hub import login
 
 HF_TOKEN = st.secrets['api_keys']['HF_TOKEN']
-login(token=st.secrets["HF_TOKEN"])
+login(token=HF_TOKEN)
 
 # Title and description
 st.title("Course Review Sentiment Analyzer")
