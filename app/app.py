@@ -8,6 +8,7 @@ import openai
 
 # 🔹 Load your sentiment model (binary classifier)
 import pathlib
+import sys
 dir = pathlib.Path.cwd().absolute()
 
 sys.path.append(dir.parent.parent)
