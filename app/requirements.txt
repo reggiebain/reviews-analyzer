@@ -1,0 +1,7 @@
+streamlit
+pandas
+torch==2.0.1
+scikit-learn
+transformers
+langdetect
+openai
