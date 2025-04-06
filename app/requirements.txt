@@ -4,3 +4,4 @@ langdetect
 transformers==4.36.2
 torch
 accelerate
+openai

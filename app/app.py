@@ -3,6 +3,7 @@ import pandas as pd
 from transformers import pipeline
 import torch
 from huggingface_hub import login
+from openai import OpenAI
 
 #HF_TOKEN = st.secrets['api_keys']['HF_TOKEN']
 login(token=st.secrets['api_keys']['HF_TOKEN'])
@@ -27,7 +28,7 @@ reviews = st.text_area("Enter reviews (one per line)", "\n".join(sample_reviews)
 reviews = [r.strip() for r in reviews if r.strip()]
 
 # Display some buttons side by side
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 with col1:
     analyze_clicked = st.button("Analyze Sentiment")
 
@@ -37,9 +38,15 @@ with col2:
 with col3:
     rating_clicked = st.button("Get Overall Rating")
 
-# Store sentiment results in session state for reuse
+with col4:
+    feedback_clicked = st.button('Get Feedback')
+
+# Store sentiment results or summary in session state for reuse
 if "sentiment_results" not in st.session_state:
     st.session_state.sentiment_results = None
+
+if "summary" not in st.session_state:
+    st.session_state.summary = None
 
 # ----------------- ANALYSIS TASK --------------------
 if analyze_clicked:
@@ -75,7 +82,9 @@ if summarize_clicked:
             device=-1
         )
         joined_text = " ".join(reviews)
+
         summary = summarizer(joined_text, max_length=100, min_length=30, do_sample=False)[0]["summary_text"]
+        st.session_state.summary = summary
 
         # Break summary into 3 bullet points
         bullet_points = summary.split(". ")[:3]
@@ -113,5 +122,32 @@ if rating_clicked:
             st.subheader("Overall Course Rating")
             st.write(f"The course is rated: **{rating} / 5**")
             st.write(f"Justification: {justification}")
+
+# ----------------- FEEDBACK TASK -------------------
+if feedback_clicked:
+    if st.session_state.summary is None:
+        st.warning("Please run 'Summarize Reviews' first to generate a summary!")
+    else:
+        with st.spinner("Generating constructive feedback from LLM..."):
+            summary = st.session_state.summary
+            prompt = (
+                f"Here is a summary of course reviews: '{summary}'. "
+                "Please provide constructive feedback on how the course could be improved based on this summary."
+            )
+            response = openai_client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful course instructor providing constructive feedback."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=150,
+                temperature=0.7
+            )
+            feedback = response.choices[0].message.content.strip()
+
+            # Display feedback
+            st.subheader("Constructive Feedback")
+            st.write(feedback)
+
 # Footer
 st.write("Powered by Hugging Face Transformers and Streamlit.")
