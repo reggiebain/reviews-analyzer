@@ -39,9 +39,9 @@ if st.button("Analyze"):
         #)
         st.write("Inside the analyzer button part...")
         sentiment_analyzer = pipeline('sentiment-analysis', model="nlptown/bert-base-multilingual-uncased-sentiment")
-        print(sentiment_analyzer.model.name_or_path)
+        #print(sentiment_analyzer.model.name_or_path)
         # Analyze sentiment for each review
-        results = sentiment_analyzer("This class was awesome!")
+        results = sentiment_analyzer(reviews)
 
         # Prepare data for table
         df = pd.DataFrame({
