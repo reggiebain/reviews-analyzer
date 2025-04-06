@@ -58,14 +58,15 @@ with left_col:
     st.image(
         "images/app_logo.png",  # Free online course image
         caption="Get feedback on your course!",
-        width=200
+        width=250
     )
 with right_col:
-    st.markdown('<div class="subheader">Description</div>')
+    st.markdown('<div class="subheader">Description</div>', unsafe_allow_html=True)
     st.write("This app analyzes the sentiment of course reviews, summarizes them, provides an overall rating, and offers constructive feedback. Use the buttons below!")
 
 # Sample reviews (hardcoded for simplicity; could be loaded from a file)
 st.markdown('<div class="subheader">Sample Reviews</div>', unsafe_allow_html=True)
+st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 sample_reviews = [
     "This course was amazing, I learned so much!",
     "Terrible experience, the instructor was unprepared.",
@@ -81,11 +82,17 @@ reviews = st.text_area("Enter reviews (one per line)", "\n".join(sample_reviews)
 reviews = [r.strip() for r in reviews if r.strip()]
 
 # Buttons
+col1, col2, col3, col4 = st.columns(4)
 st.markdown('<div class="subheader">Actions</div>', unsafe_allow_html=True)
-analyze_clicked = st.button("Analyze Sentiment", use_container_width=True)
-summarize_clicked = st.button("Summarize Reviews", use_container_width=True)
-rating_clicked = st.button("Get Overall Rating", use_container_width=True)
-feedback_clicked = st.button("Get Feedback", use_container_width=True)
+st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+with col1:
+    analyze_clicked = st.button("Analyze Sentiment", use_container_width=True)
+with col2:
+    summarize_clicked = st.button("Summarize Reviews", use_container_width=True)
+with col3:
+    rating_clicked = st.button("Get Overall Rating", use_container_width=True)
+with col4:
+    feedback_clicked = st.button("Get Feedback", use_container_width=True)
 
 # Store sentiment results or summary in session state for reuse
 if "sentiment_results" not in st.session_state:
