@@ -118,15 +118,12 @@ if summarize_clicked:
             try:
                 joined_text = " ".join(reviews)
                 summary = summarizer(joined_text, max_length=100, min_length=30, do_sample=False)[0]["summary_text"]
-
                 st.session_state.summary = summary
-                
                 #bullet_points = summary.split(". ")[:3]
                 bullet_points = re.split(f'[.!]', summary)
-                
                 st.subheader("Summary of Reviews")
-                bullet_points_text = "\n".join([f"• {point.strip()}" for point in bullet_points if point.strip()])
-                st.markdown(bullet_points_text)
+                #bullet_points_text = "\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()])
+                st.markdown("\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()]))
             except Exception as e:
                 st.error(f"Summarization failed: {str(e)}")
 
