@@ -50,7 +50,7 @@ st.markdown("""
 
 # Title with delimiter
 st.markdown('<div class="title">Course Review Analyzer</div>', unsafe_allow_html=True)
-st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+#st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 
 # Make two main columns, left is info and questions, right is results
 left_col, right_col = st.columns([1,1])
@@ -64,7 +64,7 @@ with left_col:
     )
 with right_col:
     st.markdown('<div class="subheader">App Description</div>', unsafe_allow_html=True)
-    st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+    #st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
     st.write("""This app uses NLP techniques to analyze course reviews. 
              It can track the sentiment, provide a summary, give you an overall score, 
              and provide constructive feedback based on your reviews.""")
@@ -78,7 +78,7 @@ with right_col:
 
 # Sample reviews (hardcoded for simplicity; could be loaded from a file)
 st.markdown('<div class="subheader">Reviews</div>', unsafe_allow_html=True)
-st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+#st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 sample_reviews = [
     "This course was amazing, I learned so much!",
     "Terrible experience, the instructor was unprepared.",
@@ -93,7 +93,7 @@ reviews = [r.strip() for r in reviews if r.strip()]
 
 # Buttons
 st.markdown('<div class="subheader">Actions</div>', unsafe_allow_html=True)
-st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+#st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 with col1:
     analyze_clicked = st.button("Analyze Sentiment", use_container_width=True)
@@ -139,7 +139,7 @@ def load_summarizer():
         return None
 
 st.markdown('<div class="subheader">Results</div>', unsafe_allow_html=True)
-st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+#st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 # ----------------- ANALYSIS TASK --------------------
 if analyze_clicked:
     with st.spinner("Loading model and analyzing sentiments..."):
