@@ -4,8 +4,8 @@ from transformers import pipeline
 import torch
 from huggingface_hub import login
 
-HF_TOKEN = st.secrets['api_keys']['HF_TOKEN']
-login(token=HF_TOKEN)
+#HF_TOKEN = st.secrets['api_keys']['HF_TOKEN']
+login(token=st.secrets['api_keys']['HF_TOKEN'])
 
 # Title and description
 st.title("Course Review Sentiment Analyzer")
@@ -37,7 +37,8 @@ if st.button("Analyze"):
         #    model="finiteautomata/bertweet-base-sentiment-analysis",
             #   device=-1  # CPU-only for Streamlit Cloud
         #)
-        sentiment_analyzer = pipeline('sentiment-analysis')
+ 
+        sentiment_analyzer = pipeline('sentiment-analysis', model="finiteautomata/bertweet-base-sentiment-analysis")
         # Analyze sentiment for each review
         results = sentiment_analyzer("This class was awesome!")
 
