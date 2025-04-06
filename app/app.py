@@ -50,18 +50,19 @@ st.markdown("""
 
 # Title with delimiter
 st.markdown('<div class="title">Course Review Analyzer</div>', unsafe_allow_html=True)
-#st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
+st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 
 # Make two main columns, left is info and questions, right is results
-left_col, right_col = st.columns([1,1])
+left_col, right_col = st.columns([1,1.5])
 
 with left_col:
-    # Add a course-related image
+    st.markdown('<div class="image-container">', unsafe_allow_html=True)
     st.image(
-        "images/app_logo.png",  # Free online course image
-        caption="Get feedback on your course!",
+        "images/app_logo.png",
+        caption="How do students feel about your class?",
         width=250
     )
+    st.markdown('</div>', unsafe_allow_html=True)
 with right_col:
     st.markdown('<div class="subheader">App Description</div>', unsafe_allow_html=True)
     #st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
