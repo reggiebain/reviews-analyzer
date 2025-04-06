@@ -12,9 +12,9 @@ import sys
 dir = pathlib.Path.cwd().absolute()
 
 sys.path.append(dir.parent.parent)
-sentiment_model_path = "app/sentiment_model_classical.pkl"
-with open(sentiment_model_path, "rb") as f:
-    sentiment_model = pickle.load(f)
+#sentiment_model_path = "app/sentiment_model_classical.pkl"
+#with open(sentiment_model_path, "rb") as f:
+#    sentiment_model = pickle.load(f)
 
 @st.cache_resource
 def load_sentiment_model():
@@ -59,9 +59,10 @@ def predict_sentiment(text):
     return sentiment_model.predict([text])[0]  # binary: 0 = neg, 1 = pos
 
 def summarize_reviews_bullets(reviews):
-    summarizer = load_summarizer()
+    #summarizer = load_summarizer()
     combined_text = " ".join(reviews)
-    summary = summarizer(combined_text, max_length=150, min_length=50, do_sample=False)[0]["summary_text"]
+    #summary = summarizer(combined_text, max_length=150, min_length=50, do_sample=False)[0]["summary_text"]
+    summary = "test summary"
     bullets_prompt = f"Turn the following review summary into 3 bullet points:\n\n{summary}"
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
