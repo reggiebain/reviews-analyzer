@@ -36,6 +36,11 @@ with col2:
 
 with col3:
     rating_clicked = st.button("Get Overall Rating")
+
+# Store sentiment results in session state for reuse
+if "sentiment_results" not in st.session_state:
+    st.session_state.sentiment_results = None
+
 # ----------------- ANALYSIS TASK --------------------
 if analyze_clicked:
     # Load sentiment analysis pipeline from Hugging Face
@@ -68,6 +73,7 @@ if summarize_clicked:
         bullet_points = summary.split(". ")[:3]
         st.subheader("Summary of Reviews")
         st.markdown("\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()]))
+        
 # ----------------- RATING TASK -------------------
 if rating_clicked:
     if st.session_state.sentiment_results is None:
