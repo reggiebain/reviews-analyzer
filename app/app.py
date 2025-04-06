@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from transformers import pipeline
-from transformers.utils import init_empty_weights
 import torch
 from huggingface_hub import login
 
