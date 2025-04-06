@@ -5,5 +5,3 @@ scikit-learn==1.2.2
 transformers==4.28.1
 langdetect
 openai
-path
-sys
