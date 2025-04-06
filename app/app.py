@@ -16,8 +16,17 @@ sentiment_model_path = "app/sentiment_model_classical.pkl"
 with open(sentiment_model_path, "rb") as f:
     sentiment_model = pickle.load(f)
 
-# 🔹 Summarizer (for 3 bullet point summary)
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+@st.cache_resource
+def load_sentiment_model():
+    with open("app/sentiment_model_classical.pkl", "rb") as f:
+        return pickle.load(f)
+
+sentiment_model = load_sentiment_model()
+
+@st.cache_resource
+def load_summarizer():
+    #return pipeline("summarization", model="facebook/bart-large-cnn")
+    return pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 
 # 🔹 LLM feedback (you need an OpenAI API key)
 openai.api_key = st.secrets.get("OPENAI_API_KEY")
@@ -48,6 +57,7 @@ def predict_sentiment(text):
     return sentiment_model.predict([text])[0]  # binary: 0 = neg, 1 = pos
 
 def summarize_reviews_bullets(reviews):
+    summarizer = load_summarizer()
     combined_text = " ".join(reviews)
     summary = summarizer(combined_text, max_length=150, min_length=50, do_sample=False)[0]["summary_text"]
     bullets_prompt = f"Turn the following review summary into 3 bullet points:\n\n{summary}"
