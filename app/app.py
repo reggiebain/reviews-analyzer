@@ -1,10 +1,10 @@
 import streamlit as st
 import pandas as pd
 import pickle
-import torch
-from transformers import pipeline
+#import torch
+#from transformers import pipeline
 from langdetect import detect
-import openai
+#import openai
 
 # 🔹 Load your sentiment model (binary classifier)
 import pathlib
