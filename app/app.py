@@ -121,21 +121,30 @@ def load_sentiment_analyzer():
             model="nlptown/bert-base-multilingual-uncased-sentiment",
             device=-1
         )
+    except HfHubHTTPError as e:
+        if e.response.status_code == 429:
+            st.error("Too many requests to Hugging Face Hub. Please wait a moment and try again.")
+        else:
+            st.error(f"Failed to load sentiment model: {str(e)}")
+        return None
     except Exception as e:
         st.error(f"Failed to load sentiment model: {str(e)}")
         return None
 
-# Cache summarization model
 @st.cache_resource
 def load_summarizer():
     try:
         return pipeline(
             "summarization",
-            #model="sshleifer/distilbart-cnn-12-6",
-            #model = "google/bert2bert_L-12_H-768_A-12",
             model='t5-small',
             device=-1
         )
+    except HfHubHTTPError as e:
+        if e.response.status_code == 429:
+            st.error("Too many requests to Hugging Face Hub. Please wait a moment and try again.")
+        else:
+            st.error(f"Failed to load summarization model: {str(e)}")
+        return None
     except Exception as e:
         st.error(f"Failed to load summarization model: {str(e)}")
         return None
