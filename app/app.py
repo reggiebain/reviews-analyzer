@@ -69,7 +69,8 @@ def load_summarizer():
     try:
         return pipeline(
             "summarization",
-            model="sshleifer/distilbart-cnn-12-6",
+            #model="sshleifer/distilbart-cnn-12-6",
+            model='t5-small',
             device=-1
         )
     except Exception as e:
