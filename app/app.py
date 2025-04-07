@@ -6,18 +6,6 @@ from huggingface_hub import login
 from openai import OpenAI
 import re
 
-# Login to Hugging Face with debug output
-try:
-    st.write("Logging in to Hugging Face...")
-    login(token=st.secrets['api_keys']['HF_TOKEN'])
-    st.write("Hugging Face login successful.")
-except KeyError:
-    st.error("Hugging Face token not found in secrets. Please configure it in Streamlit Cloud settings.")
-    st.stop()
-except Exception as e:
-    st.error(f"Login failed: {str(e)}")
-    st.stop()
-
 # get open ai client using my secret
 openai_client = OpenAI(api_key=st.secrets['api_keys']['OPENAI_API_KEY'])
 
@@ -125,6 +113,17 @@ if "summary" not in st.session_state:
 
 @st.cache_resource
 def load_sentiment_analyzer():
+    # Login to Hugging Face with debug output
+    try:
+        st.write("Logging in to Hugging Face...")
+        login(token=st.secrets['api_keys']['HF_TOKEN'])
+        st.write("Hugging Face login successful.")
+    except KeyError:
+        st.error("Hugging Face token not found in secrets. Please configure it in Streamlit Cloud settings.")
+        st.stop()
+    except Exception as e:
+        st.error(f"Login failed: {str(e)}")
+        st.stop()
     try:
         return pipeline(
             'sentiment-analysis',
@@ -186,8 +185,7 @@ if analyze_clicked:
                 # Display results
                 st.markdown('<div class="subheader">Sentiment Analysis Results</div>', unsafe_allow_html=True)
                 st.write("Here’s the sentiment for each review:")
-                html_table = df.to_html(index=False, classes="result-box", escape=False)
-                st.markdown(f'<div class="result-box">{html_table}</div>', unsafe_allow_html=True)
+                st.table(df)  # Plain table, no green box
             except Exception as e:
                 st.error(f"Sentiment analysis failed: {str(e)}")
 
@@ -200,14 +198,26 @@ if summarize_clicked:
         else:
             try:
                 joined_text = " ".join(reviews)
-                summary = summarizer(joined_text, max_length=100, min_length=30, do_sample=False)[0]["summary_text"]
+                # Code for running summarizer with HF
+                #summary = summarizer(joined_text, max_length=100, min_length=30, do_sample=False)[0]["summary_text"]
+                
+                # Code for running Open AI
+                prompt = f"Summarize the following course reviews in a concise paragraph:\n\n{joined_text}"
+                response = openai_client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=[{"role": "system", "content": "You are a concise summarizer."},
+                              {"role": "user", "content": prompt}
+                              ],
+                    max_tokens=100,
+                    temperature=0.5
+                )
+                summary = response.choices[0].message.content.strip()
+
                 st.session_state.summary = summary
                 #bullet_points = summary.split(". ")[:3]
                 bullet_points = re.split(f'[.!]', summary)
                 st.markdown('<div class="subheader">Summary of Reviews</div>', unsafe_allow_html=True)
-                st.markdown('<div class="result-box">', unsafe_allow_html=True)
                 st.markdown("\n".join([f"- {point.strip()}" for point in bullet_points if point.strip()]))
-                st.markdown('</div>', unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Summarization failed: {str(e)}")
 
@@ -240,10 +250,8 @@ if rating_clicked:
 
             # Display rating and justification
             st.markdown('<div class="subheader">Overall Course Rating</div>', unsafe_allow_html=True)
-            st.markdown('<div class="result-box">', unsafe_allow_html=True)
             st.write(f"The course is rated: **{rating} / 5**")
             st.write(f"Justification: {justification}")
-            st.markdown('</div>', unsafe_allow_html=True)
 
 # ----------------- FEEDBACK TASK -------------------
 if feedback_clicked:
