@@ -92,7 +92,7 @@ reviews = [r.strip() for r in reviews if r.strip()]
 
 # Buttons
 st.markdown('<div class="subheader">Actions</div>', unsafe_allow_html=True)
-st.write()
+st.write("Click on an option below. *Note* that summary/feedback should only be run after analyzing sentiment")
 #st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 with col1:
