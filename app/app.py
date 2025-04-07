@@ -275,7 +275,7 @@ if feedback_clicked:
                     temperature=0.7
                 )
                 feedback = response.choices[0].message.content.strip()
-                st.subheader("Constructive Feedback")
+                st.markdown('<div class="subheader">Constructive Feedback</div>', unsafe_allow_html=True)
                 st.write(feedback)
             except Exception as e:
                 st.error(f"Failed to get feedback from LLM: {str(e)}")
