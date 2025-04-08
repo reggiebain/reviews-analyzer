@@ -23,7 +23,7 @@ We observed a significant class imbalance in the data (see below), where around 
 
 The reviews varied significantly in length as can be seen below. However, they also had widely varying *quality*. Here are a few below:
 
-| | **Samples of Review** | 
+| | **Sample Reviews** | 
 |-- | -- |
 | 1 |A fantastic course for beginners. Explaining underlying concepts in a easy and understandable way. Dr. Chuck is fantastic. |
 | 2 |GOOOOOOOOOOOOOOOOOOOOOOOd |
@@ -31,6 +31,36 @@ The reviews varied significantly in length as can be seen below. However, they a
 | 4 | A Great Course! |
 | 5 | Fue una experiencia gratificante el poder realizar el curso. La flexibilidad que permite y la calidad de la información, merece la mejor calificación  | 
 
+The varying quality led to ask an interesting question *Can we make a model that discriminates between meaningful and gibberish or meaningless reviews?"* Our goal is to gain actionable insights from the reviews. There were 29,031 reviews with < 5 characters and 78,044 with fewer than 10 characters. A few of these are shown below:
 
+| | **Gibberish/Meaningless Revews** |
+| -- | -- |
+| 1 | jhkd |
+| 2 | das | 
+| 3 | Good..!! |
+| 4 | T | 
+
+The meaningless reviews were not limited to short random letters. Some were longer (>10 characters) sequences of random letters and some reviews contain real words, but contain no significant content. Although a review of "Good course" would indicate positive sentiment, it does not contain meaningful insights. This motivated our first and second sub-projects
+
+1. Entropy analysis - High entropy can indicate nonsense text, how do entropies differ by language? 
+2. Gibberish detector - Can we create a model for identifiying meaningless text?
+
+## Entropy Analysis
+[Click here for more details on our entropy analysis](modeling/README.md)
+
+In NLP, **entropy** measures the uncertainty or information content in a **language model's probability distribution** over possible next tokens or words.
+
+$H(p) = -\sum\left[p(wᵢ) * \log₂ \left( p(wᵢ)\right)\right]$
+- `H(p)`: Entropy of the probability distribution `p` over a vocabulary  
+- `p(wᵢ)`: Probability assigned to word/token `wᵢ` by a language model  
+- `n`: Total number of possible words/tokens in the vocabulary
+
+## Gibberish Detector
+[Click here for more details on our Gibberish detector](modeling/README.md)
+
+We trained and tested a model for identifying meaningless reviews. Although it's hard to say for sure, we estimate that, similar to the dataset we were given, most reviews will not be gibberish/meaningless, so we compared against a baseline of always choosing the review was meaningful/not gibberish.
+
+## Sentiment Analysis
+[Click here for more details on our sentiment prediction model](modeling/README.md)
 
 
