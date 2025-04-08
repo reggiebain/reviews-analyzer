@@ -3,12 +3,12 @@
 
 <table>
   <tr>
-    <td><img src="../images/rating_hist.png" alt="course ratings" width="300"></td>
-    <td><img src="../images/word_count_hist.png" alt="Image 2" width="300"></td>
+    <td><img src="../images/rating_hist.png" alt="course ratings" width="500"></td>
+    <td><img src="../images/word_count_hist.png" alt="Image 2" width="500"></td>
   </tr>
   <tr>
-    <td><img src="../images/review_lang_dist.png" alt="Image 3" width="300"></td>
-    <td><img src="../images/top_universities.png" alt="Image 4" width="300"></td>
+    <td><img src="../images/review_lang_dist.png" alt="Image 3" width="500"></td>
+    <td><img src="../images/top_universities.png" alt="Image 4" width="500"></td>
   </tr>
 </table>
 
