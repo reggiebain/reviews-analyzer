@@ -1,8 +1,18 @@
 # Exploratory Data Analysis
 ## Coursera Reviews + Ratings
-![fig1](../images/rating_hist.png)
+
+<table>
+  <tr>
+    <td><img src="../images/rating_hist.png" alt="course ratings" width="300"></td>
+    <td><img src="../images/word_count_hist.png" alt="Image 2" width="300"></td>
+  </tr>
+  <tr>
+    <td><img src="../images/review_lang_dist.png" alt="Image 3" width="300"></td>
+    <td><img src="../images/top_universities.png" alt="Image 4" width="300"></td>
+  </tr>
+</table>
+
 ![fig2](../images/rating_over_time.png)
-![fig3](../images/top_universities.png)
 
 Potential Outliers (using IQR method):
 | Institution | Average Rating | Number of Ratings |
