@@ -19,7 +19,8 @@ In this project, we do a deep dive on course reviews using NLP techniques. We an
 We found a large database of [reviews of Coursera courses on Kaggle](https://www.kaggle.com/datasets/imuhammad/course-reviews-on-coursera/data) that included details about the instructor, the course topic, the texts of real course reviews, and rating of the course from 1 to 5. 
 
 We observed a significant class imbalance in the data (see below), where around 79% of the entries listed a 5/5 rating, however with millions of datapoints, we still had plenty of negative/neutral reviews to work with.
-<img src="images/rating_hist.png" alt="drawing" width="250"/>. 
+
+<img src="images/rating_hist.png" alt="drawing" width="400" margin='auto'/>. 
 
 The reviews varied significantly in length as can be seen below. However, they also had widely varying *quality*. Here are a few below:
 
@@ -42,7 +43,7 @@ The varying quality led to ask an interesting question *Can we make a model that
 
 The meaningless reviews were not limited to short random letters. Some were longer (>10 characters) sequences of random letters and some reviews contain real words, but contain no significant content. Although a review of "Good course" would indicate positive sentiment, it does not contain meaningful insights. This motivated our first and second sub-projects
 
-1. Entropy analysis - High entropy can indicate nonsense text, how do entropies differ by language? 
+1. Entropy analysis - High entropy can indicate nonsense text, but how do entropies differ by language? 
 2. Gibberish detector - Can we create a model for identifiying meaningless text?
 
 ## Entropy Analysis
@@ -54,6 +55,8 @@ $H(p) = -\sum\left[p(wᵢ) * \log₂ \left( p(wᵢ)\right)\right]$
 - `H(p)`: Entropy of the probability distribution `p` over a vocabulary  
 - `p(wᵢ)`: Probability assigned to word/token `wᵢ` by a language model  
 - `n`: Total number of possible words/tokens in the vocabulary
+
+This can be calcualted at the character, word, or sentence level. Gibberish text (e.g., "asdf asdf lkjweoiur qwe!") could tend to have high entropy because characters are random or nonsensical, there’s little repetition or pattern and because the distribution of characters is fairly uniform. R
 
 ## Gibberish Detector
 [Click here for more details on our Gibberish detector](modeling/README.md)

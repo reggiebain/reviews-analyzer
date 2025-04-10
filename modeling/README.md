@@ -1,9 +1,106 @@
 # Modeling
 ## Entropy Statistical Analysis
+Before undertaking building our gibberish detection model, we sought to study entropy a bit more closely. Various sources (see https://arxiv.org/pdf/1606.06996) claim that entropy (at the character, word, and even sentence level) differs significantly by language. The distributions of character-level entropy for our Coursera reviews is below for the languages that had at least 10k reviews in our datset:
+![fig2](../images/entropy_boxplot.png)
+### Normality Test Results (Anderson-Darling)
+In order to see if average entropy differs by language, we needed to establish what test was appropriate. We found that the entropy of the languages is not normally distributed for most language (see histogram below)
+![fig11](../images/review_entropy_dist.png)
+and the QQ-plots for the top languages below:
+![fig1](../images/qq_grid.png)
+We also used the Anderson-Darling test and looked at skewness and kurtosis (which should be 0) to check  for normality. The results are shown below
+| Language | Samples (N) | Normality Test | Skewness | Kurtosis |
+|----------|-------------|----------------|----------|----------|
+| English | 1,190,455 | Failed | -2.23 | 7.68 |
+| Spanish | 98,361 | Failed | -3.04 | 12.86 |
+| French | 33,012 | Failed | 0.32 | 0.19 |
+| Somali | 19,826 | Failed | 2.19 | 4.21 |
+| Romanian | 15,950 | Failed | 0.02 | -1.28 |
+| Portuguese | 15,670 | Failed | -1.77 | 2.57 |
+| Catalan | 15,516 | Failed | 1.38 | 1.77 |
+| Afrikaans | 12,633 | Failed | -0.15 | 1.75 |
+
+This motivated us to use the Kruskal-Wallis test, which ultimately revealed that the average entropies were in fact statistically significantly different by language in our Coursera dataset!
+
 
 ## Gibberish/Meaningful Review Classifier
+#### Dataset
+We explored the Coursera dataset and found a number of reviews that were gibberish and many more that were effectively meaningless, from which no actionable insights could be drawn. So, we explored another dataset of over 1 million Amazon product reviews where a number had already been labeled as gibberish. Our plan was to train and deploy this model on our Coursera dataset. The dataset had about 96% real and 4% gibberish reviews (which we figure is fairly realistic).
+#### Feature Selection
+Since gibberish does not occur very often (only about 4%) of the total entries in the Amazon product review dataset, we had to deal with some class imbalance issues. For trying to diagnose feature importance we temporarily balanced the classes and tried various sample sizes between 100 and 10k, we saw that the top 7 features were pretty consistent. 
+
+We took two approaches to feature selection for our gibberish classifier. Using sci-kit learn's SelectKBest we calcualted f-statistics (the ratio of between group variance to in group variance) to gauge how strongly each feature was associated with gibberish and corresponding p-values (the probability of seeing an F-statistic this extreme if the feature has no relationship with it being gibberish). The results are below.
+Balanced Sample Results:
+|    | Feature            |       Score |      P-value |
+|---:|:-------------------|------------:|-------------:|
+|  0 | entropy            | 2381.23     | 1.45955e-266 |
+|  1 | word_count         | 1866.44     | 9.96787e-231 |
+|  2 | n_chars            | 1801.11     | 1.00156e-225 |
+|  8 | anomaly_score      | 1763.43     | 8.69945e-223 |
+|  7 | cosine_to_centroid |  721.201    | 5.35043e-120 |
+|  4 | ngram_coherence    |  580.445    | 1.85507e-101 |
+|  6 | avg_word_length    |  156.791    | 1.62205e-33  |
+|  3 | max_repeated       |    4.82678  | 0.0282502    |
+|  5 | punct_ratio        |    0.883225 | 0.347547     |
+
+We also used the chi2 test to see if being able to detect the language was an important feature (along with other categorical variables that tested the alphabet) and indeed it was:
+Balanced Sample Results:
+|    | Feature                |   Score |       P-value |
+|---:|:-----------------------|--------:|--------------:|
+|  0 | cannot_detect_language |      40 |   2.53963e-10 |
+|  5 | has_latin              |       0 |   1           |
+|  1 | has_chinese            |     nan | nan           |
+|  2 | has_cyrillic           |     nan | nan           |
+|  3 | has_abakada            |     nan | nan           |
+|  4 | has_hangul             |     nan | nan           |
+
+The distribution of our numeric features for gibberish are shown below, separated by whether or not they were actually gibberish:
+![fig3](../images/gibberish_feature_dists.png)
+
+As another check (and since it could handle numerical and categorical features), we used a random forest to track feature importances, yielding the following results:
+Feature Importance (All Features):
+|    | Feature                |   Importance |
+|---:|:-----------------------|-------------:|
+|  9 | cannot_detect_language |   0.385838   |
+|  0 | entropy                |   0.223072   |
+|  2 | n_chars                |   0.171239   |
+|  6 | avg_word_length        |   0.126694   |
+|  4 | ngram_coherence        |   0.0380646  |
+|  1 | word_count             |   0.021238   |
+|  5 | punct_ratio            |   0.0149847  |
+|  7 | cosine_to_centroid     |   0.00851155 |
+|  8 | anomaly_score          |   0.00719214 |
+|  3 | max_repeated           |   0.0031665  |
+
+![fig4](../images/gibberish_rf_feature_importance.png)
+
+We then looked at the correlations between the features (shown below). 
+![fig5](../images/gibberish_feature_corrs.png)
+Unsuprisingly, we had some very high correlations between, say n_chars, and word_count as well as cosine to centroid and anomaly score (considering both pairs are linearly dependent) so we opted to keep the features listed below:
+1. Entropy
+2. Word Count
+3. Max Repeated
+4. Ngram coherence
+5. Punctuation Ratio
+6. Average Word Length
+7. Anomaly Score
+8. Cannot Detect Language
+
+We ran a number of experiments on large samples of the data before finally running the model on the entire data set for deployment. For tuning the model we used a 50k sample size.
+
+### Model Comparison (Test Set Results)
+| Model                         | Best Parameters                                              |   Precision (Gibberish) |   Recall (Gibberish) |   F1-Score (Gibberish) |   ROC AUC |     PR AUC |
+|:------------------------------|:-------------------------------------------------------------|------------------------:|---------------------:|-----------------------:|----------:|-----------:|
+| Logistic Regression           | {'C': 10, 'solver': 'lbfgs'}                                 |              0.981579   |            0.992021  |             0.986772   |  0.998902 | 0.995229   |
+| Random Forest                 | {'max_depth': 10, 'n_estimators': 50}                        |              0.997319   |            0.989362  |             0.993324   |  0.997338 | 0.996728   |
+| SVM                           | {'C': 10, 'kernel': 'linear'}                                |              0.98939    |            0.992021  |             0.990704   |  0.999187 | 0.993797   |
+| Gradient Boosting             | {'learning_rate': 0.01, 'max_depth': 3, 'n_estimators': 100} |              0.989333   |            0.986702  |             0.988016   |  0.994653 | 0.982619   |
+| Baseline (Random Guess)       | Gibberish Prob = 0.00358                                     |              0          |            0         |             0          |  0.49825  | 0.00178649 |
+| Baseline (Lang Not Detected)  | cannot_detect_language = 1                                   |              1          |            0.0851064 |             0.156863   |  0.542553 | 0.544188   |
+| Baseline (None are gibberish) | None Gibberish                                               |              0.00357299 |            1         |             0.00712054 |  0.5      | 0.501786   |
 
 ## Sentiment Prediction Model
+
+After cullin
 
 | Model               |   Accuracy |   F1 Score | Best Hyperparameters                        |
 |---------------------|------------|------------|---------------------------------------------|
