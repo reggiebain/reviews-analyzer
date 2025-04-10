@@ -47,7 +47,7 @@ The meaningless reviews were not limited to short random letters. Some were long
 2. Gibberish detector - Can we create a model for identifiying meaningless text?
 
 ## Entropy Analysis
-[Click here for more details on our entropy analysis](modeling/README.md)
+[Click here for more details on our entropy analysis](modeling/entropy-stats-analysis.ipynb)
 
 In NLP, **entropy** measures the uncertainty or information content in a **language model's probability distribution** over possible next tokens or words.
 
@@ -56,14 +56,21 @@ $H(p) = -\sum\left[p(wᵢ) * \log₂ \left( p(wᵢ)\right)\right]$
 - `p(wᵢ)`: Probability assigned to word/token `wᵢ` by a language model  
 - `n`: Total number of possible words/tokens in the vocabulary
 
-This can be calcualted at the character, word, or sentence level. Gibberish text (e.g., "asdf asdf lkjweoiur qwe!") could tend to have high entropy because characters are random or nonsensical, there’s little repetition or pattern and because the distribution of characters is fairly uniform. R
+This can be calcualted at the character, word, or sentence level. Gibberish text (e.g., "asdf asdf lkjweoiur qwe!") could tend to have high entropy because characters are random or nonsensical, there’s little repetition or pattern and because the distribution of characters is fairly uniform. As a first step in identifying meaningless reviews, we explored the entropy of reviews as a possible feature. We also decided to do a statistical analysis of entropy by language.
 
+#### Results
+We found that a number of our languages (we looked at ones with at least 10k reviews present) had statistically significant differences in median entropy using the Kruskal-Wallis test, a non-parametric alternative to ANOVA. This test was justified since the entropy distributions are not normally distributed (which we showed with QQ plots, the Anderson Darling test, and the skewness/kurtosis of the entropy distributions above).
+
+This was somewhat expected since even the different structures of alphabets naturally cause differences is entropy between languages. But we wanted to confirm this and explore non-parametric inference techniques like this.
 ## Gibberish Detector
 [Click here for more details on our Gibberish detector](modeling/README.md)
 
-We trained and tested a model for identifying meaningless reviews. Although it's hard to say for sure, we estimate that, similar to the dataset we were given, most reviews will not be gibberish/meaningless, so we compared against a baseline of always choosing the review was meaningful/not gibberish.
+We trained and tested a model for identifying meaningless reviews. Although it's hard to say for sure, we estimate that, similar to the dataset we were given, most reviews will not be gibberish/meaningless, so we compared against several different baselines including randomly selecting that a certain % were meaningless based on th
+
+We
 
 ## Sentiment Analysis
 [Click here for more details on our sentiment prediction model](modeling/README.md)
+
 
 
