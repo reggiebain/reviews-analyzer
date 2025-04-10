@@ -24,7 +24,7 @@ This motivated us to use the Kruskal-Wallis test, which ultimately revealed that
 
 ## Gibberish/Meaningful Review Classifier
 #### Dataset
-We explored the Coursera dataset and found a number of reviews that were gibberish and many more that were effectively meaningless, from which no actionable insights could be drawn. So, we explored another dataset of over 1 million Amazon product reviews where a number had already been labeled as gibberish. Our plan was to train and deploy this model on our Coursera dataset. The dataset had about 96% real and 4% gibberish reviews (which we figure is fairly realistic).
+We explored the Coursera dataset and found a number of reviews that were gibberish and many more that were effectively meaningless, from which no actionable insights could be drawn. So, we explored another dataset of over 1 million Amazon product reviews where a number had already been labeled as gibberish. Our plan was to train and deploy this model on our Coursera dataset. The dataset had about 99.6% real and 0.4% gibberish reviews (which we figure is fairly realistic).
 #### Feature Selection
 Since gibberish does not occur very often (only about 4%) of the total entries in the Amazon product review dataset, we had to deal with some class imbalance issues. For trying to diagnose feature importance we temporarily balanced the classes and tried various sample sizes between 100 and 10k, we saw that the top 7 features were pretty consistent. 
 
@@ -90,13 +90,13 @@ We ran a number of experiments on large samples of the data before finally runni
 ### Model Comparison (Test Set Results)
 | Model                         | Best Parameters                                              |   Precision (Gibberish) |   Recall (Gibberish) |   F1-Score (Gibberish) |   ROC AUC |     PR AUC |
 |:------------------------------|:-------------------------------------------------------------|------------------------:|---------------------:|-----------------------:|----------:|-----------:|
-| Logistic Regression           | {'C': 10, 'solver': 'lbfgs'}                                 |              0.981579   |            0.992021  |             0.986772   |  0.998902 | 0.995229   |
-| Random Forest                 | {'max_depth': 10, 'n_estimators': 50}                        |              0.997319   |            0.989362  |             0.993324   |  0.997338 | 0.996728   |
-| SVM                           | {'C': 10, 'kernel': 'linear'}                                |              0.98939    |            0.992021  |             0.990704   |  0.999187 | 0.993797   |
-| Gradient Boosting             | {'learning_rate': 0.01, 'max_depth': 3, 'n_estimators': 100} |              0.989333   |            0.986702  |             0.988016   |  0.994653 | 0.982619   |
-| Baseline (Random Guess)       | Gibberish Prob = 0.00358                                     |              0          |            0         |             0          |  0.49825  | 0.00178649 |
-| Baseline (Lang Not Detected)  | cannot_detect_language = 1                                   |              1          |            0.0851064 |             0.156863   |  0.542553 | 0.544188   |
-| Baseline (None are gibberish) | None Gibberish                                               |              0.00357299 |            1         |             0.00712054 |  0.5      | 0.501786   |
+| Logistic Regression           | {'C': 10, 'solver': 'lbfgs'}                                 |                0.981579 |            0.992021  |               0.986772 |  0.998902 | 0.995229   |
+| Random Forest                 | {'max_depth': 10, 'n_estimators': 50}                        |                0.997319 |            0.989362  |               0.993324 |  0.997338 | 0.996728   |
+| SVM                           | {'C': 10, 'kernel': 'linear'}                                |                0.98939  |            0.992021  |               0.990704 |  0.999187 | 0.993797   |
+| Gradient Boosting             | {'learning_rate': 0.01, 'max_depth': 3, 'n_estimators': 100} |                0.989333 |            0.986702  |               0.988016 |  0.994653 | 0.982619   |
+| Baseline (Random Guess)       | Gibberish Prob = 0.00358                                     |                0        |            0         |               0        |  0.49825  | 0.00178649 |
+| Baseline (Lang Not Detected)  | cannot_detect_language = 1                                   |                1        |            0.0851064 |               0.156863 |  0.542553 | 0.544188   |
+| Baseline (None are gibberish) | None Gibberish                                               |                0        |            0         |               0        |  0.5      | 0.501786   |
 
 ## Sentiment Prediction Model
 
