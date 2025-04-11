@@ -263,7 +263,7 @@ if feedback_clicked:
                 summary = st.session_state.summary
                 prompt = (
                     f"Here is a summary of course reviews: '{summary}'. "
-                    "Please provide constructive feedback on how the course could be improved based on this summary."
+                    "The user is the instructor of the course. Please provide constructive feedback on how the course could be improved based on this summary."
                 )
                 response = openai_client.chat.completions.create(
                     model="gpt-3.5-turbo",
