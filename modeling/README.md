@@ -137,6 +137,8 @@ Ultimately, we decided to do use a hybrid approach where we set our threshold to
 ### Sentiment Feature Selection
 ![fig](../images/rf_feature_importance_balanced_sentiment.png)
 
+![fig](../images/sentiment_feature_corrs_unbalanced.png)
+
 1. Polarity Score
 2. Exclamation Count
 3. Word Count
