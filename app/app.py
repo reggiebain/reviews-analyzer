@@ -282,4 +282,4 @@ if feedback_clicked:
 
 # Footer
 st.markdown('<hr class="delimiter">', unsafe_allow_html=True)
-st.write("Powered by Hugging Face Transformers, OpenAI and Streamlit.")
+st.write("App designed by Reggie Bain. Powered by Hugging Face Transformers, OpenAI and Streamlit.")
