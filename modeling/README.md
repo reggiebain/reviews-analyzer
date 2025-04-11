@@ -18,8 +18,15 @@ We also used the Anderson-Darling test and looked at skewness and kurtosis (whic
 | Portuguese | 15,670 | Failed | -1.77 | 2.57 |
 | Catalan | 15,516 | Failed | 1.38 | 1.77 |
 | Afrikaans | 12,633 | Failed | -0.15 | 1.75 |
+### Difference of Mean Entropies Analysis 
+This non-normality motivated us to use the Kruskal-Wallis test (rather than ANOVA for example), which ultimately revealed that the average entropies were in fact statistically significantly different by language in our Coursera dataset!
 
-This motivated us to use the Kruskal-Wallis test, which ultimately revealed that the average entropies were in fact statistically significantly different by language in our Coursera dataset!
+| Kruskal-Wallis Test H Statistic | P-Value |
+| -- | -- |
+| 309537.92 | < 0.0001
+
+For those interested, below is a larger box plot map of all languages with over 5 entries. We clearly see 
+![fig](../images/entropy_boxplot_5reviews.png)
 
 
 ## Gibberish/Meaningful Review Classifier
@@ -88,7 +95,11 @@ Unsuprisingly, we had some very high correlations between, say n_chars, and word
 We ran a number of experiments on large samples of the data before finally running the model on the entire data set for deployment. For tuning the model we used a 50k sample size.
 
 ### Model Comparison (Test Set Results)
-### Model Comparison (Test Set Results)
+The results of the gibberish detector are summarized below against 3 different baselines:
+1. Determine the % of reviews in the training set that are gibberish. Then guess that % of the test set is gibberish.
+2. Use only the "cannot_detect_language_feature" and mark all reviews where we can't detect it as gibberish.
+3. Guess that all reviews are not gibberish.
+
 ![fig](../images/gibberish_detector_roc_auc.png)
 | Model                         | Best Parameters                                              |   Precision (Gibberish) |   Recall (Gibberish) |   F1-Score (Gibberish) |   ROC AUC |     PR AUC |
 |:------------------------------|:-------------------------------------------------------------|------------------------:|---------------------:|-----------------------:|----------:|-----------:|
@@ -100,9 +111,29 @@ We ran a number of experiments on large samples of the data before finally runni
 | Baseline (Lang Not Detected)  | cannot_detect_language = 1                                   |                1        |            0.0851064 |               0.156863 |  0.542553 | 0.544188   |
 | Baseline (None are gibberish) | None Gibberish                                               |                0        |            0         |               0        |  0.5      | 0.501786   |
 
-## Sentiment Prediction Model
+The results above show that our trained models improve on identifying gibberish far better than our baselines. **Note:** If we tracked precision/recall of identifying NOT gibberish (i.e. real/meaningful reviews), the baselines would do much better, but the recall of gibberish reviews would still not be good.
 
-After cullin
+### Deploying the Model
+We then pickled our gibberish detector and applied it to our dataset of Coursera course reviews. After calculating the necessary features to apply the model, we studied which reviews the model labeled as gibberish. [See this notebook for more details about our analysis.](../eda/coursera-extract-gibberish-features-nonscript%20(2).ipynb)  We found that the model was classifying a lot of short reviews as "gibberish"
+
+| Stat (N=1000 Sample) | Value | 
+| -- | -- |
+| No. Short Entries that are Gibberish | 290 |
+| No. Short Entries Total | 516|
+| Pct Short Entries that are Gibberish | 56.20%|
+| Pct Gibberish Entries that are Short | 100.00%|
+
+![fig](../images/word_count_gibberish.png)
+
+We also looked at several different features and how they affected the likelihood of being classified as gibberish:
+![fig](../images/gibberish_probs_vs_features.png)
+
+We also experimented with probability cutoffs to see how many reviews were marked as gibberish as we changed the cutoffs to try to minimize classifying short (but not meaningless reviews) as gibberish:
+![fig](../images/gibberish_vs_cutoffs_multi_var.png)
+
+Ultimately, we decided to do use a hybrid approach where we set our threshold to 0.9 to get classified as gibberish and we checked that at least 75% of the words had to be real words (using Python Word Frequency package). This allowed us to classify a about 6% of reviews as "gibberish." However, these reviews would probably better be described as "meaningless" where no actionable insights can be gained from them but they are often positive or negative, so they are potentially useful for detecting sentiment.
+## Sentiment Prediction Model
+After culling our
 
 | Model               |   Accuracy |   F1 Score | Best Hyperparameters                        |
 |---------------------|------------|------------|---------------------------------------------|
