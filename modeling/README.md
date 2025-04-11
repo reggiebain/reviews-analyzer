@@ -88,6 +88,8 @@ Unsuprisingly, we had some very high correlations between, say n_chars, and word
 We ran a number of experiments on large samples of the data before finally running the model on the entire data set for deployment. For tuning the model we used a 50k sample size.
 
 ### Model Comparison (Test Set Results)
+### Model Comparison (Test Set Results)
+![fig](../images/gibberish_detector_roc_auc.png)
 | Model                         | Best Parameters                                              |   Precision (Gibberish) |   Recall (Gibberish) |   F1-Score (Gibberish) |   ROC AUC |     PR AUC |
 |:------------------------------|:-------------------------------------------------------------|------------------------:|---------------------:|-----------------------:|----------:|-----------:|
 | Logistic Regression           | {'C': 10, 'solver': 'lbfgs'}                                 |                0.981579 |            0.992021  |               0.986772 |  0.998902 | 0.995229   |
