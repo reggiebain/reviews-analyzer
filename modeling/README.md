@@ -133,30 +133,40 @@ We also experimented with probability cutoffs to see how many reviews were marke
 
 Ultimately, we decided to do use a hybrid approach where we set our threshold to 0.9 to get classified as gibberish and we checked that at least 75% of the words had to be real words (using Python Word Frequency package). This allowed us to classify a about 6% of reviews as "gibberish." However, these reviews would probably better be described as "meaningless" where no actionable insights can be gained from them but they are often positive or negative, so they are potentially useful for detecting sentiment.
 ## Sentiment Prediction Model
-After culling our
+[See our notebook here for details on extracting the features for building our sentiment model.](./sentiment-analysis-model.ipynb)
+### Sentiment Feature Selection
+![fig](../images/rf_feature_importance_balanced_sentiment.png)
 
-| Model               |   Accuracy |   F1 Score | Best Hyperparameters                        |
-|---------------------|------------|------------|---------------------------------------------|
-| Logistic Regression |   0.941255 |   0.919223 | {'C': 0.01}                                 |
-| Random Forest       |   0.940048 |   0.913632 | {'max_depth': 5, 'n_estimators': 50}        |
-| Gradient Boosting   |   0.938975 |   0.909423 | {'learning_rate': 0.01, 'n_estimators': 50} |
+1. Polarity Score
+2. Exclamation Count
+3. Word Count
+4. Avg Word Length
+5. Punct Ratio
+6. Anomaly Score
+### Run with Balanced Dataset
+| Model                      |   Accuracy |   F1 Score |   Precision |   Recall | Best Hyperparameters                                        |
+|----------------------------|------------|------------|-------------|----------|-------------------------------------------------------------|
+| Logistic Regression        |   0.791821 |   0.842668 |    0.929867 | 0.791821 | {'C': 1}                                                    |
+| Random Forest              |   0.959875 |   0.954458 |    0.95547  | 0.959875 | {'max_depth': None, 'n_estimators': 200}                    |
+| XGBoost Classifer          |   0.827681 |   0.867041 |    0.934121 | 0.827681 | {'learning_rate': 0.2, 'max_depth': 7, 'n_estimators': 200} |
+| Baseline (Always Positive) |   0.939662 |   0.910431 |    0.882964 | 0.939662 | N/A 
+| Distilbert-base-uncased (out-of-box) |   0.250722 |   0.345742 |    0.853837 | 0.250722 |
+| Distilbert-base-uncased (fine tuned) | 0.962897 | 0.959677 | 0.959309 | 0.962897 |
 
+![fig](../images/prc_classical_balanced.png)
 
-| Model                   |   Accuracy |   F1 Score |
-|-------------------------|------------|------------|
-| Distilbert-base-uncased |    0.78581 |    0.83025 |
+![fig](../images/prc_distilbert_fine_tune_balanced.png)
 
-25% Run
-| Model               |   Accuracy |   F1 Score | Best Hyperparameters                        |
-|---------------------|------------|------------|---------------------------------------------|
-| Logistic Regression |   0.941296 |   0.919062 | {'C': 0.01}                                 |
-| Random Forest       |   0.941296 |   0.914737 | {'max_depth': 5, 'n_estimators': 50}        |
-| Gradient Boosting   |   0.939946 |   0.910849 | {'learning_rate': 0.01, 'n_estimators': 50} |
+### Run with Original, Unbalanced Dataset
+| Model                      |   Accuracy |   F1 Score |   Precision |   Recall | Best Hyperparameters                                        |
+|----------------------------|------------|------------|-------------|----------|-------------------------------------------------------------|
+| Logistic Regression        |   0.791821 |   0.842668 |    0.929867 | 0.791821 | {'C': 1}                                                    |
+| Random Forest              |   0.959875 |   0.954458 |    0.95547  | 0.959875 | {'max_depth': None, 'n_estimators': 200}                    |
+| XGBoost Classifer          |   0.827681 |   0.867041 |    0.934121 | 0.827681 | {'learning_rate': 0.2, 'max_depth': 7, 'n_estimators': 200} |
+| Baseline (Always Positive) |   0.939662 |   0.910431 |    0.882964 | 0.939662 | N/A
+| Distilbert-base-uncased (out-of-box) |   0.250722 |   0.345742 |    0.853837 | 0.250722 |
+| Distilbert-base-uncased (fine tuned) | 0.962897 | 0.959677 | 0.959309 | 0.962897 |
 
-| Model                   |   Accuracy |   F1 Score |
-|-------------------------|------------|------------|
-| Distilbert-base-uncased |  0.0203779 | 0.00410165 |
+![fig](../images/prc_classical_unbalanced.png)
 
-| Model       Fine Tuned            |   Accuracy |   F1 Score |
-|-------------------------|------------|------------|
-| distilbert-base-uncased |   0.952497 |   0.943384 |
+![fig](../images/prc_distilbert_fine_tune_balanced.png)
