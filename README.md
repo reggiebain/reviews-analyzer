@@ -1,76 +1,42 @@
 # Course Reviews - An NLP Approach
-Building a pipeline for filtering, analyzing, and summarizing course reviews using modern ML techinques. 
+#### *Building a pipeline for filtering, analyzing, and summarizing course reviews using modern ML and NLP techinques* 
 ## Web App
 #### [Click here to use our Course Review Analyzer Streamlit App!](https://reviews-analyzer-bain.streamlit.app/)
 ## Overview
 In this project, we do a deep dive on course reviews using NLP techniques. We analyze various classical NLP features as well as explore the use of text embeddings and LLMs to gauge the meaningfulness and sentiment of reviews.
 
 #### KPIs
-- Model can assess positive/negative sentiment better than random guessing (50/50)
+- Model can assess positive/negative sentiment better than random guessing (50/50) or other relevant baselines.
 - Pipeline can parse unstructured review inputs and predict the sentiment
 - Filter out meaningless or gibberish entries, create app to allow user input
+
 #### Stakeholders
 - Course instructors who want to improve their courses or those in “voice of customer” type roles in industry
 - Administrators in academia/industry who want to produce broad performance metrics for staff
 - Students/customers who may be able to assess the quality of a course or product based on review summaries
 ## EDA
-[Click here to see a more detailed exploration of the features.](eda/README.md)
+We studied a large set of Coursera course reviews from Kaggle as well as a set of Amazon product reviews where *gibberish* reviews were labeled. [Click here](./data_and_saved_models/README.md) for additional discussion of our datasets. 
 
-We found a large database of [reviews of Coursera courses on Kaggle](https://www.kaggle.com/datasets/imuhammad/course-reviews-on-coursera/data) that included details about the instructor, the course topic, the texts of real course reviews, and rating of the course from 1 to 5. 
+[Click here for a detailed discussion and visualizations of our full exploratory data analysis.](eda/README.md)
 
-We observed a significant class imbalance in the data (see below), where around 79% of the entries listed a 5/5 rating, however with millions of datapoints, we still had plenty of negative/neutral reviews to work with.
+## Modeling
+#### [Click here for detailed discussion of our models](./modeling/README.md)
 
-<img src="images/rating_hist.png" alt="drawing" width="400" margin='auto'/>. 
+The discussion in our EDA section [linked here](./eda_feature_extraction/README.md) helped to motivate our first and second sub-projects described below:
 
-The reviews varied significantly in length as can be seen below. However, they also had widely varying *quality*. Here are a few below:
+#### 1. Entropy analysis
+- High entropy can indicate nonsense text, but how do entropies differ by language? 
+- Notebooks: [Entropy Analysis Notebook](./modeling_and_results/entropy-stats-analysis.ipynb)
 
-| | **Sample Reviews** | 
-|-- | -- |
-| 1 |A fantastic course for beginners. Explaining underlying concepts in a easy and understandable way. Dr. Chuck is fantastic. |
-| 2 |GOOOOOOOOOOOOOOOOOOOOOOOd |
-| 3 | Great course for beginners. I studied all programming fundamentals in school and was just trying to learn Python. I found that this course is very good for anyone that is trying to learn fundaments of programming even you have no prior knowledge. |
-| 4 | A Great Course! |
-| 5 | Fue una experiencia gratificante el poder realizar el curso. La flexibilidad que permite y la calidad de la información, merece la mejor calificación  | 
+#### 2. Gibberish detector 
+- Can we create a model for identifiying meaningless text?
+- Notebooks: [Gibberish Feature Building (Amazon Reviews)](./eda_feature_extraction/gibberish-classifier-build-features.ipynb), [Coursera Gibberish Feature Extraction](./eda_feature_extraction/coursera-extract-gibberish-features-nonscript.ipynb)
 
-The varying quality led to ask an interesting question *Can we make a model that discriminates between meaningful and gibberish or meaningless reviews?"* Our goal is to gain actionable insights from the reviews. There were 29,031 reviews with < 5 characters and 78,044 with fewer than 10 characters. A few of these are shown below:
+Once we culled the reviews for quality reviews from which we could get actionable insights, our third and final project (for now) was analyzing sentiment:
 
-| | **Gibberish/Meaningless Revews** |
-| -- | -- |
-| 1 | jhkd |
-| 2 | das | 
-| 3 | Good..!! |
-| 4 | T | 
-
-The meaningless reviews were not limited to short random letters. Some were longer (>10 characters) sequences of random letters and some reviews contain real words, but contain no significant content. Although a review of "Good course" would indicate positive sentiment, it does not contain meaningful insights. This motivated our first and second sub-projects
-
-1. Entropy analysis - High entropy can indicate nonsense text, but how do entropies differ by language? 
-2. Gibberish detector - Can we create a model for identifiying meaningless text?
-
-## Entropy Analysis
-[Click here for more details on our entropy analysis](modeling/entropy-stats-analysis.ipynb)
-
-In NLP, **entropy** measures the uncertainty or information content in a **language model's probability distribution** over possible next tokens or words.
-
-$H(p) = -\sum\left[p(wᵢ) * \log₂ \left( p(wᵢ)\right)\right]$
-- `H(p)`: Entropy of the probability distribution `p` over a vocabulary  
-- `p(wᵢ)`: Probability assigned to word/token `wᵢ` by a language model  
-- `n`: Total number of possible words/tokens in the vocabulary
-
-This can be calcualted at the character, word, or sentence level. Gibberish text (e.g., "asdf asdf lkjweoiur qwe!") could tend to have high entropy because characters are random or nonsensical, there’s little repetition or pattern and because the distribution of characters is fairly uniform. As a first step in identifying meaningless reviews, we explored the entropy of reviews as a possible feature. We also decided to do a statistical analysis of entropy by language.
-
-#### Results
-We found that a number of our languages (we looked at ones with at least 10k reviews present) had statistically significant differences in median entropy using the Kruskal-Wallis test, a non-parametric alternative to ANOVA. This test was justified since the entropy distributions are not normally distributed (which we showed with QQ plots, the Anderson Darling test, and the skewness/kurtosis of the entropy distributions above).
-
-This was somewhat expected since even the different structures of alphabets naturally cause differences is entropy between languages. But we wanted to confirm this and explore non-parametric inference techniques like this.
-## Gibberish Detector
-[Click here for more details on our Gibberish detector](modeling/README.md)
-
-We trained and tested a model for identifying meaningless reviews. Although it's hard to say for sure, we estimate that, similar to the dataset we were given, most reviews will not be gibberish/meaningless, so we compared against several different baselines including randomly selecting that a certain % were meaningless based on th
-
-We
-
-## Sentiment Analysis
-[Click here for more details on our sentiment prediction model](modeling/README.md)
+#### 3. Sentiment Analyzer 
+- Experiment with classical NLP features and a feature-based ML approach as well as fine-tuning a modern pre-trained deep learning model.
+- Notebooks: [Extract Sentiment Features](./eda_feature_extraction/sentiment-analyzer-feature-extraction.ipynb), [Sentiment Model Building](./modeling_and_results/sentiment-analysis-model.ipynb)
 
 
 
