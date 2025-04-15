@@ -14,14 +14,15 @@ This can be calcualted at the character, word, or sentence level. Gibberish text
 ### Entropy in Different Languages
 Before undertaking building our gibberish detection model, we sought to study entropy a bit more closely. Various sources (see https://arxiv.org/pdf/1606.06996) claim that entropy (at the character, word, and even sentence level) differs significantly by language. The distributions of character-level entropy for our Coursera reviews is below for the languages that had at least 10k reviews in our datset:
 
-<img src="../images/entropy_boxplot.png" alt="drawing" width="400" margin='auto'/>
+<img src="../images/entropy_boxplot.png" alt="drawing" width="500" margin='auto'/>
 
 ### Normality Test Results (Anderson-Darling)
 In order to see if average entropy differs by language, we needed to establish what test was appropriate. We found that the entropy of the languages is not normally distributed for most language (see histogram below)
 
-<img src="../images/review_entropy_dist.png" alt="drawing" width="400" margin='auto'/> 
+<img src="../images/review_entropy_dist.png" alt="drawing" width="500" margin='auto'/> 
 
 and the QQ-plots for the top languages below:
+
 <img src="../images/qq_grid.png" alt="drawing" width="600" margin='auto'/> 
 
 We also used the Anderson-Darling test and looked at skewness and kurtosis (which should be 0) to check  for normality. The results are shown below:
