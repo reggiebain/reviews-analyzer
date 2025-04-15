@@ -28,14 +28,6 @@ First, we took a look at distributions of various features including course rati
 | -- | -- |
 | ![img3](../images/review_lang_dist.png) | ![img4](../images/top_universities.png) | 
 
-<img src="../images/rating_hist.png" alt="course ratings" width="500">
-
-<img src="../images/word_count_hist.png" alt="Image 2" width="500">
-
-<img src="../images/review_lang_dist.png" alt="Image 3" width="500">
-
-<img src="../images/top_universities.png" alt="Image 4" width="500">
-
 We also tracked the average ratings over time to make sure that there wasn't any obvious trend or seasonality to the ratings. The only dip that occurred in 2016 was only an average about about 0.17 points. This would be interesting to study in a separate project. Questions like *Do ratings of an individual course change over time even as the content stay the same*
 
 <img src="../images/rating_over_time.png" alt="course ratings" width="500">
