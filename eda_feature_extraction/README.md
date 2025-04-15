@@ -24,6 +24,10 @@ The varying quality led to ask an interesting question *Can we make a model that
 The meaningless reviews were not limited to short random letters. Some were longer (>10 characters) sequences of random letters and some reviews contain real words, but contain no significant content. Although a review of "Good course" would indicate positive sentiment, it does not contain meaningful insights. 
 ## Visualizing the Features
 First, we took a look at distributions of various features including course ratings, word counts, langugages we could identify, and institutions/organizations from which the reviews came.
+| ![img1](../images/rating_hist.png) | ![img2](../images/word_count_hist.png) |
+| -- | -- |
+| ![img3](../images/review_lang_dist.png) | ![img4](../images/top_universities.png) | 
+
 <img src="../images/rating_hist.png" alt="course ratings" width="500">
 
 <img src="../images/word_count_hist.png" alt="Image 2" width="500">
@@ -50,11 +54,10 @@ Potential Outliers (using IQR method):
 | Yandex | 3.42 | 290 | Low |
 | **Overall Avg** | **4.65** | **1454711** | N/A |
 
-![fig5](../images/word_count_hist.png)
-![fig6](../images/review_count_hist.png)
-![fig7](../images/review_entropy_dist.png)
-![fig8](../images/review_entropy_lang.png)
-![fig9](../images/num_reviews_language.png)
+| ![Image 1](../images/word_count_hist.png) | ![Image 2](../images/review_count_hist.png) |
+|---|---|
+| ![Image 3](../images/review_entropy_dist.png) | ![Image 4](../images/num_reviews_language.png)|
+
 Top 10 Languages % of Total
 | Language | Pct of Total |
 |--|--|
