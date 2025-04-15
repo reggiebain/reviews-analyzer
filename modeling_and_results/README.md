@@ -1,5 +1,17 @@
 # Modeling
-## Entropy Statistical Analysis
+## 1. Entropy Statistical Analysis
+### What is Entropy?
+
+In NLP, **entropy** measures the uncertainty or information content in a **language model's probability distribution** over possible next tokens or words.
+
+$H(p) = -\sum\left[p(wᵢ) * \log₂ \left( p(wᵢ)\right)\right]$
+- `H(p)`: Entropy of the probability distribution `p` over a vocabulary  
+- `p(wᵢ)`: Probability assigned to word/token `wᵢ` by a language model  
+- `n`: Total number of possible words/tokens in the vocabulary
+
+This can be calcualted at the character, word, or sentence level. Gibberish text (e.g., "asdf asdf lkjweoiur qwe!") could tend to have high entropy because characters are random or nonsensical, there’s little repetition or pattern and because the distribution of characters is fairly uniform. As a first step in identifying meaningless reviews, we explored the entropy of reviews as a possible feature.
+
+### Entropy in Different Languages
 Before undertaking building our gibberish detection model, we sought to study entropy a bit more closely. Various sources (see https://arxiv.org/pdf/1606.06996) claim that entropy (at the character, word, and even sentence level) differs significantly by language. The distributions of character-level entropy for our Coursera reviews is below for the languages that had at least 10k reviews in our datset:
 
 <img src="../images/entropy_boxplot.png" alt="drawing" width="400" margin='auto'/>
@@ -34,7 +46,7 @@ For those interested, below is a larger box plot map of all languages with over 
 
 <img src="../images/entropy_boxplot_5reviews.png" alt="drawing" width="600" margin='auto'/> 
 
-## Gibberish/Meaningful Review Classifier
+## 2. Gibberish/Meaningful Review Classifier
 #### Dataset
 We explored the Coursera dataset and found a number of reviews that were gibberish and many more that were effectively meaningless, from which no actionable insights could be drawn. So, we explored another dataset of over 1 million Amazon product reviews where a number had already been labeled as gibberish. Our plan was to train and deploy this model on our Coursera dataset. The dataset had about 99.6% real and 0.4% gibberish reviews (which we figure is fairly realistic).
 #### Feature Selection
@@ -142,7 +154,8 @@ We also experimented with probability cutoffs to see how many reviews were marke
 Ultimately, we decided to do use a hybrid approach where we set our probability threshold to 0.9 (rather than the default of 0.5) to get classified as gibberish and we checked that at least 75% of the words had to be real words (using Python Word Frequency package). This allowed us to classify a about 6% of reviews as "gibberish." However, these reviews would probably better be described as "meaningless" where no actionable insights can be gained from them but they are often positive or negative, so they are potentially useful for detecting sentiment. So in summary, there's a few insights/ideas here:
 1. **Pro of Model:** Shorter reviews are unlikely to yield any actionable insights anyway. Based on the plots above, adjusting the probablity threshold allows us to minimze losing reviews that, while not *insightful* do can contribute strong positive/negative sentiment.
 2. **Cons of Model/Areas for Improvement:** This is *not* just detecting "gibberish." Additionally, it could be subject to malicious entries that contain real words in a random order. *To improve:* our next step would be to incorporate *sentence-level-entropy* to track how likely we are to see that type of sentence. 
-## Sentiment Prediction Model
+
+## 3. Sentiment Prediction Model
 [See our notebook here for details on extracting the features for building our sentiment model.](./sentiment-analysis-model.ipynb)
 ### Sentiment Feature Selection
 We sought to build models to predict sentiment of course reviews. We did 3 main approaches:

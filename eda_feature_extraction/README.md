@@ -1,10 +1,11 @@
 # Exploratory Data Analysis
 ## Coursera Reviews + Ratings
 First, we took a look at distributions of various features including course ratings, word counts, langugages we could identify, and institutions/organizations from which the reviews came.
+<able>
+<tr><img src="../images/rating_hist.png" alt="course ratings" width="500">
 
-<img src="../images/rating_hist.png" alt="course ratings" width="500">
-
-<img src="../images/word_count_hist.png" alt="Image 2" width="500">
+<img src="../images/word_count_hist.png" alt="Image 2" width="500"></tr>
+</td>
 
 <img src="../images/review_lang_dist.png" alt="Image 3" width="500">
 
