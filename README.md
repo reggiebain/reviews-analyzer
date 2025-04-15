@@ -15,12 +15,12 @@ In this project, we do a deep dive on course reviews using NLP techniques. We an
 - Administrators in academia/industry who want to produce broad performance metrics for staff
 - Students/customers who may be able to assess the quality of a course or product based on review summaries
 ## EDA
-We studied a large set of Coursera course reviews from Kaggle as well as a set of Amazon product reviews where *gibberish* reviews were labeled. [Click here](./data_and_saved_models/README.md) for additional discussion of our datasets. 
-
 [Click here for a detailed discussion and visualizations of our full exploratory data analysis.](eda/README.md)
 
+We studied a large set of Coursera course reviews from Kaggle as well as a set of Amazon product reviews where *gibberish* reviews were labeled. [Click here](./data_and_saved_models/README.md) for additional discussion of our datasets. 
+
 ## Modeling
-#### [Click here for detailed discussion of our models](./modeling/README.md)
+[Click here for detailed discussion of our model building and results](./modeling/README.md)
 
 The discussion in our EDA section [linked here](./eda_feature_extraction/README.md) helped to motivate our first and second sub-projects described below:
 
