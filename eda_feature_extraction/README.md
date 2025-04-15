@@ -30,7 +30,7 @@ First, we took a look at distributions of various features including course rati
 
 We also tracked the average ratings over time to make sure that there wasn't any obvious trend or seasonality to the ratings. The only dip that occurred in 2016 was only an average about about 0.17 points. This would be interesting to study in a separate project. Questions like *Do ratings of an individual course change over time even as the content stay the same*
 
-<img src="../images/rating_over_time.png" alt="course ratings" width="500">
+<img src="../images/rating_over_time.png" alt="course ratings" width="600">
 
 Potential Outliers (using IQR method):
 | Institution | Average Rating | Number of Ratings |
