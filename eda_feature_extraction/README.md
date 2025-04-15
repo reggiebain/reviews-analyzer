@@ -1,11 +1,32 @@
 # Exploratory Data Analysis
-## Coursera Reviews + Ratings
-First, we took a look at distributions of various features including course ratings, word counts, langugages we could identify, and institutions/organizations from which the reviews came.
-<able>
-<tr><img src="../images/rating_hist.png" alt="course ratings" width="500">
+## Exploring the Course Reviews
+We found a large database of [reviews of Coursera courses on Kaggle](https://www.kaggle.com/datasets/imuhammad/course-reviews-on-coursera/data) that included details about the instructor, the course topic, the texts of real course reviews, and rating of the course from 1 to 5. 
 
-<img src="../images/word_count_hist.png" alt="Image 2" width="500"></tr>
-</td>
+The reviews varied significantly in length as can be seen below. However, they also had widely varying *quality*. Here are a few below:
+
+| | **Sample Reviews** | 
+|-- | -- |
+| 1 |A fantastic course for beginners. Explaining underlying concepts in a easy and understandable way. Dr. Chuck is fantastic. |
+| 2 |GOOOOOOOOOOOOOOOOOOOOOOOd |
+| 3 | Great course for beginners. I studied all programming fundamentals in school and was just trying to learn Python. I found that this course is very good for anyone that is trying to learn fundaments of programming even you have no prior knowledge. |
+| 4 | A Great Course! |
+| 5 | Fue una experiencia gratificante el poder realizar el curso. La flexibilidad que permite y la calidad de la información, merece la mejor calificación  | 
+
+The varying quality led to ask an interesting question *Can we make a model that discriminates between meaningful and gibberish or meaningless reviews?"* Our goal is to gain actionable insights from the reviews. There were 29,031 reviews with < 5 characters and 78,044 with fewer than 10 characters. A few of these are shown below:
+
+| | **Gibberish/Meaningless Revews** |
+| -- | -- |
+| 1 | jhkd |
+| 2 | das | 
+| 3 | Good..!! |
+| 4 | T | 
+
+The meaningless reviews were not limited to short random letters. Some were longer (>10 characters) sequences of random letters and some reviews contain real words, but contain no significant content. Although a review of "Good course" would indicate positive sentiment, it does not contain meaningful insights. 
+## Visualizing the Features
+First, we took a look at distributions of various features including course ratings, word counts, langugages we could identify, and institutions/organizations from which the reviews came.
+<img src="../images/rating_hist.png" alt="course ratings" width="500">
+
+<img src="../images/word_count_hist.png" alt="Image 2" width="500">
 
 <img src="../images/review_lang_dist.png" alt="Image 3" width="500">
 
