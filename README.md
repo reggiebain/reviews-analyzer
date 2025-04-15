@@ -20,7 +20,7 @@ In this project, we do a deep dive on course reviews using NLP techniques. We an
 We studied a large set of Coursera course reviews from Kaggle as well as a set of Amazon product reviews where *gibberish* reviews were labeled. [Click here](./data_and_saved_models/README.md) for additional discussion of our datasets. 
 
 ## Modeling
-[Click here for detailed discussion of our model building and results](./modeling/README.md)
+[Click here for detailed discussion of our model building and results](./modeling_and_results/README.md)
 
 The discussion in our EDA section [linked here](./eda_feature_extraction/README.md) helped to motivate our first and second sub-projects described below:
 
