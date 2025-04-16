@@ -87,7 +87,7 @@ Balanced Sample Results:
 The distribution of our numeric features for gibberish are shown below, separated by whether or not they were actually gibberish:
 <img src="../images/gibberish_feature_dists.png" alt="drawing" width="600" margin='auto'/> 
 
-As another check (and since it could handle numerical and categorical features), we used a random forest to track feature importances, yielding the following results:
+As another check (and since it could handle numerical and categorical features), we used a random forest to track feature importances and studied the correlations between the features (shown below):
 Feature Importance (All Features):
 |    | Feature                |   Importance |
 |---:|:-----------------------|-------------:|
@@ -102,12 +102,14 @@ Feature Importance (All Features):
 |  8 | anomaly_score          |   0.00719214 |
 |  3 | max_repeated           |   0.0031665  |
 
-<img src="../images/gibberish_rf_feature_importance.png" alt="drawing" width="600" margin='auto'/> 
+<table>
+  <tr>
+    <td><img src="../images/gibberish_rf_feature_importance.png" alt="rf_features" width="600"></td>
+    <td><img src="../images/gibberish_feature_corrs.png" alt='lang dist' width='600'>
+  </tr>
+</table>
 
-We then looked at the correlations between the features (shown below). 
-
-<img src="../images/gibberish_feature_corrs.png" alt="drawing" width="600" margin='auto'/> 
-
+We also 
 Unsuprisingly, we had some very high correlations between, say n_chars, and word_count as well as cosine to centroid and anomaly score (considering both pairs are linearly dependent) so we opted to keep the features listed below. Although some seemed to have low importance, the number of features is still quite small and several (like punctuation ratio and average word length) come at low computational cost:
 1. Entropy
 2. Word Count
@@ -172,10 +174,13 @@ We sought to build models to predict sentiment of course reviews. We did 3 main 
 
 ### Feature Extraction
 We built a number of NLP relevant sentiment features. [Click here to see the notebook](./sentiment-analysis-model.ipynb). Using a random forest to track feature importances (which ones when split on reduce entropy/gini impurity the most) and then mapping the correlations between our features we settled on the ones listed below. 
-<img src="../images/rf_feature_importance_balanced_sentiment.png" alt="drawing" width="600" margin='auto'/> 
 
-<img src="../images/sentiment_feature_corrs_unbalanced.png" alt="drawing" width="600" margin='auto'/> 
-
+<table>
+  <tr>
+    <td><img src="../images/rf_feature_importance_balanced_sentiment.png" alt="rf_features" width="600"></td>
+    <td><img src="../images/sentiment_feature_corrs_unbalanced.png" alt='lang dist' width='600'>
+  </tr>
+</table>
 
 **1. Polarity Score --** Sentiment score from [VADER](https://github.com/cjhutto/vaderSentiment), ranging from -1 (negative) to +1 (positive), used to capture the overall tone of the review.
 
