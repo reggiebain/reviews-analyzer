@@ -220,7 +220,7 @@ However, with millions of datapoints, we still had plenty of negative/neutral re
 
 <table>
   <tr>
-    <td><img src="../images/prc_sentiment_balanced.png" alt="balanced sentiment" width="600"></td>
+    <td><img src="../images/prc_classical_unbalanced.png" alt="unbalanced sentiment" width="600"></td>
     <td><img src="../images/prc_distilbert_fine_tune_unbalanced.png" alt='lang dist' width='600'>
   </tr>
 </table>
