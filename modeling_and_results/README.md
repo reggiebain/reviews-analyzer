@@ -14,12 +14,12 @@ This can be calcualted at the character, word, or sentence level. Gibberish text
 ### Entropy in Different Languages
 Before undertaking building our gibberish detection model, we sought to study entropy a bit more closely. Various sources (see https://arxiv.org/pdf/1606.06996) claim that entropy (at the character, word, and even sentence level) differs significantly by language. The distributions of character-level entropy for our Coursera reviews is below for the languages that had at least 10k reviews in our datset:
 
-<img src="../images/entropy_boxplot.png" alt="drawing" width="500" margin='auto'/>
+<img src="../images/entropy_boxplot.png" alt="drawing" width="600" margin='auto'/>
 
 ### Normality Test Results (Anderson-Darling)
 In order to see if average entropy differs by language, we needed to establish what test was appropriate. We found that the entropy of the languages is not normally distributed for most language (see histogram below)
 
-<img src="../images/review_entropy_dist.png" alt="drawing" width="500" margin='auto'/> 
+<img src="../images/review_entropy_dist.png" alt="drawing" width="600" margin='auto'/> 
 
 and the QQ-plots for the top languages below:
 
@@ -52,6 +52,12 @@ For those interested, below is a larger box plot map of all languages with over 
 We explored the Coursera dataset and found a number of reviews that were gibberish and many more that were effectively meaningless, from which no actionable insights could be drawn. So, we explored another dataset of over 1 million Amazon product reviews where a number had already been labeled as gibberish. Our plan was to train and deploy this model on our Coursera dataset. The dataset had about 99.6% real and 0.4% gibberish reviews (which we figure is fairly realistic).
 #### Feature Selection
 Since gibberish does not occur very often (only about 4%) of the total entries in the Amazon product review dataset, we had to deal with some class imbalance issues. For trying to diagnose feature importance we temporarily balanced the classes and tried various sample sizes between 100 and 10k, we saw that the top 7 features were pretty consistent. 
+
+We constructed a handful of NLP related features (many of which are self-explanatory such as word count) including:
+- **Cosine-to-Centroid and Anomaly Score** - We calculated embeddings of all of our reviews (in both the amazon and coursera datasets). Then we found the Euclidean distance from each embedding to the centroid of the Amazon review set embeddings.
+- **N-gram coherence** – Measures how frequently word sequences appear in natural language to help identify if text uses realistic word combinations of n-grams. The formula for this is basically:
+
+  - $\text{N-gram Coherence} = \frac{\text{Number of Valid N-grams in Text}}{\text{Total Number of N-grams in Text}}$
 
 We took two approaches to feature selection for our gibberish classifier. Using sci-kit learn's SelectKBest we calcualted f-statistics (the ratio of between group variance to in group variance) to gauge how strongly each feature was associated with gibberish and corresponding p-values (the probability of seeing an F-statistic this extreme if the feature has no relationship with it being gibberish). The results are below.
 Balanced Sample Results:
@@ -255,10 +261,18 @@ However, with millions of datapoints, we still had plenty of negative/neutral re
 #### 2. Gibberish Classifier
 - We created a model that classifies gibberish reviews from non-gibberish/meaningless reviews. The model was trained on Amazon product review data and then deployed on our Coursera review set.
 - The most important NLP features included whether or not the language of the review could be detected, the entropy of the review, the word count, and the ngram coherence.
+- Our model showed significant improvement over all of the baselines we chose, consistently having much higher recall on identifying the true gibberish reviews. The model also showed a 533.3% increase in performance over a baseline where we only used whether we could detect the language to classify a review as gibberish.
 - The classifier tended to over classify short reviews that didn't contain a lot of meaning as "gibberish" and we raised the prediction threshold to help aleviate this error in deployment. 
+
 
 #### 3. Sentiment Analyzer
 - We created several models that predict the sentiment of course reviews better than various baseline models using several appraoches.
 - Our first appraoch utilized classical NLP features and ML techniques including embeddings, n-grams, and polarity (leveraging VADER). We saw a 60.5% performance increase on the balanced (between positive/negative) dataset of reviews and an 8.2% improvement over baseline in the unbalanced dataset.
 - We also tried fine-tuning a pre-trained transformer model `distilbert-base-uncased` to predict sentiment, which worked quite well. In the balanced dataset, it showed an 80.4% increase in F1 score from the baseline and a 117% increase over the out-of-the-box distilbert model. In the unbalanced dataset, it showed 5.4% increase in F1 score over the baseline and 177% increase over the out-of-the-box model.
 - Additionally, all of these improvements came with just 1 epoch of training (which was limited using a free tier of Kaggle GPUs).
+
+## Future Work
+- Going forward, we need to continue to fine tune our Gibberish classifier focusing particularly on edge cases such as long strings of real words arranged in random, meaningless order.
+- We also would like to train the gibberish model on a much larger (1-2 orders of magnitude) set of labeled truly gibberish reviews. This could be achieved by hand labeling a few hundred/thousand reviews and/or generating gibberish of specified structure using an LLM.
+- For our sentiment analyzer, we need to find more training data with a much (1-2 orders of magnitude) larger set of explicitly negative reviews of varying length and structure.
+- For actual deployment, the fine tuning of a pre-trained neural network will likely outperform any of our classical feature based approaches. So, we'd like to train for many more epochs (50+ or however many needed until validation performance dips).
