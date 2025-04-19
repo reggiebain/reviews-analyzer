@@ -2,6 +2,7 @@
 #### *Building a pipeline for filtering, analyzing, and summarizing course reviews using modern ML and NLP techinques* 
 ## Web App
 #### [Click here to use our Course Review Analyzer Streamlit App!](https://reviews-analyzer-bain.streamlit.app/)
+- Notebooks: [Streamlit App Code](./app/app.py)
 ## Overview
 In this project, we do a deep dive on course reviews using NLP techniques. We analyze various classical NLP features as well as explore the use of text embeddings and LLMs to gauge the meaningfulness and sentiment of reviews.
 
@@ -18,6 +19,7 @@ In this project, we do a deep dive on course reviews using NLP techniques. We an
 [Click here for a detailed discussion and visualizations of our full exploratory data analysis.](./eda_feature_extraction/README.md)
 
 We studied a large set of Coursera course reviews from Kaggle as well as a set of Amazon product reviews where *gibberish* reviews were labeled. [Click here](./data_and_saved_models/README.md) for additional discussion of our datasets. 
+- Notebooks: [Coursera EDA](./eda_feature_extraction/coursera-reviews-eda.ipynb), [Extracting Gibberish Features - Amazon](./eda_feature_extraction/gibberish-classifier-build-features.ipynb), [Extracting Gibberish - Coursera](./eda_feature_extraction/coursera-extract-gibberish-features-nonscript.ipynb), [Sentiment Model Feature Extraction - Coursera](./eda_feature_extraction/sentiment-analyzer-feature-extraction.ipynb)
 
 ## Modeling
 [Click here for detailed discussion of our model building and results](./modeling_and_results/README.md)
@@ -36,7 +38,7 @@ Once we culled the reviews for quality reviews from which we could get actionabl
 
 #### 3. Sentiment Analyzer 
 - Experiment with classical NLP features and a feature-based ML approach as well as fine-tuning a modern pre-trained deep learning model.
-- Notebooks: [Extract Sentiment Features](./eda_feature_extraction/sentiment-analyzer-feature-extraction.ipynb), [Sentiment Model Building](./modeling_and_results/sentiment-analysis-model.ipynb)
+- Notebooks: [Extract Sentiment Features](./eda_feature_extraction/sentiment-analyzer-feature-extraction.ipynb), [Sentiment Model Building](./modeling_and_results/sentiment-analysis-model.ipynb), [Sentiment Model - 5 Epoch Fine Tuning](./modeling_and_results/sentiment-analysis-model-5-epochs.ipynb)
 
 
 
