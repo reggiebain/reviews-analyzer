@@ -19,7 +19,7 @@ In this project, we do a deep dive on course reviews using NLP techniques. We an
 [Click here for a detailed discussion and visualizations of our full exploratory data analysis.](./eda_feature_extraction/README.md)
 
 We studied a large set of Coursera course reviews from Kaggle as well as a set of Amazon product reviews where *gibberish* reviews were labeled. [Click here](./data_and_saved_models/README.md) for additional discussion of our datasets. 
-- Notebooks: [Coursera EDA](./eda_feature_extraction/coursera-reviews-eda.ipynb), [Extracting Gibberish Features - Amazon](./eda_feature_extraction/gibberish-classifier-build-features.ipynb), [Extracting Gibberish - Coursera](./eda_feature_extraction/coursera-extract-gibberish-features-nonscript.ipynb), [Sentiment Model Feature Extraction - Coursera](./eda_feature_extraction/sentiment-analyzer-feature-extraction.ipynb)
+- Notebooks: [Coursera EDA](./eda_feature_extraction/coursera-reviews-eda.ipynb)
 
 ## Modeling
 [Click here for detailed discussion of our model building and results](./modeling_and_results/README.md)
