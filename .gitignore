@@ -9,6 +9,7 @@ __pycache__/
 
 # uneeded files i don't want to delete
 eda_feature_extraction/extract_gibberish_features.py
+data_and_saved_models/gibberish_detector.py
 
 # Large Files
 data_and_saved_models/fine_tuned_distilbert-base-uncased
