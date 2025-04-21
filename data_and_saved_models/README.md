@@ -1,5 +1,6 @@
 # Data
 ## [Master Kaggle Dataset (Click here)](https://www.kaggle.com/datasets/reggiebain/reviews-analyzer-dataset)
+![img](../images/data_card.png)
 You can find our master kaggle dataset at the link above. It contains about 2.31 GB of data in total including the following:
 - **Original datasets:** 
     - [Coursera Course Reviews](https://www.kaggle.com/datasets/imuhammad/course-reviews-on-coursera/data)
