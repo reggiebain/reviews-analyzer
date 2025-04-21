@@ -5,8 +5,6 @@
   <tr>
     <td><img src="../images/data_card.png" alt="img1" width="200"></td>
     <td><img src="../images/data_card_2.png" alt='img2' width='200'>
-  </tr>
-  <tr>
     <td><img src="../images/data_card_3.png" alt="img1" width="200"></td>
     <td><img src="../images/data_card_4.png" alt='img2' width='200'>
   </tr>
