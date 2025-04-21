@@ -45,5 +45,6 @@ Once we culled the reviews for quality reviews from which we could get actionabl
 - Experiment with classical NLP features and a feature-based ML approach as well as fine-tuning a modern pre-trained deep learning model.
 - Notebooks: [Extract Sentiment Features](./eda_feature_extraction/sentiment-analyzer-feature-extraction.ipynb), [Sentiment Model Building](./modeling_and_results/sentiment-analysis-model.ipynb), [Sentiment Model - 5 Epoch Fine Tuning](./modeling_and_results/sentiment-analysis-model-5-epochs.ipynb)
 
-
+## Summary & Presentation Video
+[Click here to see our video, slides, and summary!](./checkpoints_and_submission/README.md)
 
