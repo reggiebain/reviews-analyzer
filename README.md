@@ -17,6 +17,9 @@ In this project, we do a deep dive on course reviews using NLP techniques. We an
 - Course instructors who want to improve their courses or those in “voice of customer” type roles in industry
 - Administrators in academia/industry who want to produce broad performance metrics for staff
 - Students/customers who may be able to assess the quality of a course or product based on review summaries
+## Data + Models
+[Click here to read more about our data and access our saved models](./data_and_saved_models/README.md)
+
 ## EDA
 [Click here for a detailed discussion and visualizations of our full exploratory data analysis.](./eda_feature_extraction/README.md)
 
