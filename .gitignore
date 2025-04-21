@@ -6,9 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
-# Large Files
-data/df_w_langs_entropies.pkl
 
+
+# Large Files
+/Users/reggiebain/erdos/reviews-analyzer/data_and_saved_models
+/Users/reggiebain/erdos/reviews-analyzer/data_and_saved_models
 
 # Distribution / packaging
 .Python
