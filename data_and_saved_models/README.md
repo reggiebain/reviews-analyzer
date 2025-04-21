@@ -1,6 +1,17 @@
 # Data
 ## [Master Kaggle Dataset (Click here)](https://www.kaggle.com/datasets/reggiebain/reviews-analyzer-dataset)
-![img](../images/data_card.png)
+
+<table>
+  <tr>
+    <td><img src="../images/data_card.png" alt="img1" width="600"></td>
+    <td><img src="../images/data_card_2.png" alt='img2' width='600'>
+  </tr>
+  <tr>
+    <td><img src="../images/data_card_3.png" alt="img1" width="600"></td>
+    <td><img src="../images/data_card_4.png" alt='img2' width='600'>
+  </tr>
+</table>
+
 You can find our master kaggle dataset at the link above. It contains about 2.31 GB of data in total including the following:
 - **Original datasets:** 
     - [Coursera Course Reviews](https://www.kaggle.com/datasets/imuhammad/course-reviews-on-coursera/data)
