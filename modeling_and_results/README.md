@@ -109,7 +109,6 @@ Feature Importance (All Features):
   </tr>
 </table>
 
-We also 
 Unsuprisingly, we had some very high correlations between, say n_chars, and word_count as well as cosine to centroid and anomaly score (considering both pairs are linearly dependent) so we opted to keep the features listed below. Although some seemed to have low importance, the number of features is still quite small and several (like punctuation ratio and average word length) come at low computational cost:
 1. Entropy
 2. Word Count
