@@ -252,16 +252,12 @@ However, with millions of datapoints, we still had plenty of negative/neutral re
   </tr>
 </table>
 
- | Metrics on Test Set | Value | 
- | -- | -- | 
-| Model Accuracy | 0.9597112640590901 |
-| Model F1 | 0.9544979122053618 | 
-| Model Precision | 0.9556883197999043 | 
-| Model Recall | 0.9597112640590901 | 
-| Baseline Accuracy | 0.9369145543058587 |
-| Baseline F1 | 0.9063991802000066 | 
-| Baseline Precision | 0.8778088820701458 | 
-| Baseline Recall | 0.9369145543058587 | 
+ | Metrics on Test Set | Model Value | Baseline Value |
+ | -- | -- | -- |
+| Model Accuracy | 0.9597112640590901 | 0.9369145543058587 |
+| Model F1 | 0.9544979122053618 | 0.9063991802000066 |
+| Model Precision | 0.9556883197999043 | 0.8778088820701458 |
+| Model Recall | 0.9597112640590901 | 0.9369145543058587 |
 
 - For the original dataset, the Random Forest Classifier model out performs the baseline of always guessing that the sentiment is positive (which performs well since over 99% of the reviews are actually positive **before removing gibberish reviews**) by about 4.8% in F1 score and 8.2% in precision.
 - Again, the fine-tuned transformer also out performs the baseline and both the classical ML and fine-tuned transformers significantly outperform the out-of-the-box transformer. The fine-tuning was only run for 1 epoch, so with additional, epochs, it's likely that performance would continue to improve.
