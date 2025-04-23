@@ -256,7 +256,7 @@ However, with millions of datapoints, we still had plenty of negative/neutral re
 - Again, the fine-tuned transformer also out performs the baseline and both the classical ML and fine-tuned transformers significantly outperform the out-of-the-box transformer. The fine-tuning was only run for 1 epoch, so with additional, epochs, it's likely that performance would continue to improve.
 - Although these are relatively small improvements, with more epochs and a more robust set of negative reviews, the models' performance would continue to improve over the baseline.
 
- | Metrics on Test Set | Model Value | Baseline Value |
+ | Metrics on Test Set | Best Model Value | Baseline Value |
  | -- | -- | -- |
 | Model Accuracy | 0.9597112640590901 | 0.9369145543058587 |
 | Model F1 | 0.9544979122053618 | 0.9063991802000066 |
